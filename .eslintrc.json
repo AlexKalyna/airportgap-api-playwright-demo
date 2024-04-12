@@ -1,0 +1,33 @@
+{
+    "root": true,
+    "extends": [
+      "prettier",
+      "airbnb-typescript",
+      "plugin:prettier/recommended",
+      "plugin:import/typescript",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:playwright/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "tsconfigRootDir": "./"    },
+    "plugins": ["@typescript-eslint", "prettier", "import"],
+    "rules": {
+      "prettier/prettier": "warn",
+      "import/prefer-default-export": "off",
+      "no-debugger": "warn",
+      "playwright/no-wait-for-timeout": "warn",
+      "playwright/no-networkidle": "warn",
+      "playwright/no-skipped-test": "off",
+      "playwright/expect-expect": "off",
+      "react/jsx-filename-extension": [0],
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": true
+        }
+      ]
+    }
+  }
+  

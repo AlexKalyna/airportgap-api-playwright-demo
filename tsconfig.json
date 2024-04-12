@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+      "module": "ESNext",
+      "sourceMap": true,
+      "target": "ES2016",
+      "baseUrl": ".",
+      "allowSyntheticDefaultImports": true,
+      "lib": ["dom", "dom.iterable", "esnext"],
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "skipLibCheck": true,
+      "useDefineForClassFields": true,
+      "esModuleInterop": true,
+      "typeRoots": ["./node_modules/@types", "./types"]
+    },
+    "ts-node": {
+      "require": ["tsconfig-paths/register"],
+      "compilerOptions": {
+        "module": "commonjs",
+      }
+    },
+    "exclude": ["node_modules", "playwright-report", "test-results"]
+  }
+  
