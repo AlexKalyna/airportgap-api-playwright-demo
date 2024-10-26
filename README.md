@@ -1,14 +1,14 @@
-IMPORTANT. This file require modification
-
 # API Tests Demo Project
 
 This project demonstrates how to write API tests using [Playwright](https://playwright.dev/). It provides examples of how to interact with an API and perform various test scenarios.
+
+API Documentation can be found here: https://airportgap.com/docs
 
 ## Prerequisites
 
 Before running the tests, make sure you have the following installed:
 
-- Node.js (version X.X.X)
+- Node.js (version 22)
 - Playwright (version X.X.X)
 
 ## Getting Started
@@ -16,7 +16,7 @@ Before running the tests, make sure you have the following installed:
 1. Clone this repository:
 
     ```bash
-    git clone https://github.com/your-username/your-repo.git
+    git clone https://github.com/AlexKalyna/airportgap-api-playwright-demo.git
     ```
 
 2. Install the dependencies:
