@@ -1,11 +1,14 @@
 {
   "name": "automationexercise-playwright-demo",
   "version": "1.0.0",
-  "description": "demo project for playwright API and UI autotests",
+  "description": "demo project for playwright API tests",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "npx playwright test",
+    "report": "npx playwright show-report"
+  },
   "author": "Oleksandr Kalyna",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
