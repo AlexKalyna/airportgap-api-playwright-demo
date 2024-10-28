@@ -1,53 +1,46 @@
-IMPORTANT. This file require modification
+## Introduction
 
-# API Tests Demo Project
-
-This project demonstrates how to write API tests using [Playwright](https://playwright.dev/). It provides examples of how to interact with an API and perform various test scenarios.
-
-## Prerequisites
-
-Before running the tests, make sure you have the following installed:
-
-- Node.js (version X.X.X)
-- Playwright (version X.X.X)
+This repository is a demo project showcasing API testing using [Playwright](https://playwright.dev/). It includes a collection of automated tests designed to interact with and validate responses from the [Airport Gap API](https://airportgap.com), an API that provides information about various airports around the world.
 
 ## Getting Started
 
 1. Clone this repository:
 
-    ```bash
-    git clone https://github.com/your-username/your-repo.git
+    ```shell
+    git clone https://github.com/AlexKalyna/airportgap-api-playwright-demo.git
     ```
 
 2. Install the dependencies:
 
-    ```bash
+    ```shell
     npm install
     ```
 
-3. Configure the API endpoint:
+3. Install Playwright:
 
-    Open the `config.js` file and update the `API_ENDPOINT` variable with the URL of your API.
+    ```shell
+    npm install playwright
+    ```
 
-4. Run the tests:
+4. Create a `.env` file in the root of the project ( ideally by copying `.env.example` ).
 
-    ```bash
-    npm test
+
+5. Run the tests:
+
+    ```shell
+    npm run test
+    ```
+
+6. Show report:
+
+    ```shell
+    npm run report
     ```
 
 ## Test Scenarios
 
-This project covers the following test scenarios:
+The scenarios for API tests can be found [here](./test_scenarios.txt)
 
-- [Scenario 1: Testing API endpoint X](./tests/scenario1.js)
-- [Scenario 2: Testing API endpoint Y](./tests/scenario2.js)
-- [Scenario 3: Testing API endpoint Z](./tests/scenario3.js)
-
-Feel free to explore the test files to see how the API requests are made and assertions are performed.
-
-## Contributing
-
-Contributions are welcome! If you find any issues or have suggestions for improvement, please open an issue or submit a pull request.
 
 ## License
 

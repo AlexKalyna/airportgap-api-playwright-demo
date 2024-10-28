@@ -1,0 +1,110 @@
+
+API test scenarios:
+
+1. GET /airports
+* Test Scenario 1: Retrieve a list of all airports.
+    * Input: No parameters.
+    * Expected Outcome: Response status 200 OK with a list of airports in JSON format.
+* Test Scenario 2: Validate response structure.
+    * Input: No parameters.
+    * Expected Outcome: Response contains fields like id, name, location, code.
+* Test Scenario 3: Check pagination (if applicable).
+    * Input: Query parameters for pagination (e.g., ?page=1&limit=10).
+    * Expected Outcome: Response status 200 OK with paginated results.
+
+2. GET /airports/:id
+
+* Test Scenario 1: Retrieve an airport by valid ID.
+    * Input: Valid airport ID.
+    * Expected Outcome: Response status 200 OK with airport details.
+* Test Scenario 2: Retrieve an airport by invalid ID.
+    * Input: Invalid airport ID.
+    * Expected Outcome: Response status 404 Not Found with an appropriate error message.
+* Test Scenario 3: Validate response structure.
+    * Input: Valid airport ID.
+    * Expected Outcome: Response contains fields like id, name, location, code.
+
+3. POST /airports/distance
+
+* Test Scenario 1: Calculate distance between two valid airports.
+    * Input: JSON body with two valid airport IDs.
+    * Expected Outcome: Response status 200 OK with calculated distance.
+* Test Scenario 2: Calculate distance with invalid airport IDs.
+    * Input: JSON body with one or both invalid IDs.
+    * Expected Outcome: Response status 400 Bad Request with an error message.
+* Test Scenario 3: Validate response structure.
+    * Input: JSON body with two valid airport IDs.
+    * Expected Outcome: Response contains fields like distance, unit.
+
+4. POST /tokens
+
+* Test Scenario 1: Create a new token with valid credentials.
+    * Input: JSON body with valid username and password.
+    * Expected Outcome: Response status 200 OK with a token.
+* Test Scenario 2: Attempt to create a token with invalid credentials.
+    * Input: JSON body with invalid username or password.
+    * Expected Outcome: Response status 401 Unauthorized with an error message.
+* Test Scenario 3: Validate token response structure.
+    * Input: JSON body with valid credentials.
+    * Expected Outcome: Response contains fields like token, expires_in.
+
+5. GET /favorites
+
+* Test Scenario 1: Retrieve favorites for authenticated user.
+    * Input: Valid authentication token.
+    * Expected Outcome: Response status 200 OK with a list of favorite items.
+* Test Scenario 2: Access favorites without authentication.
+    * Input: No authentication token.
+    * Expected Outcome: Response status 401 Unauthorized.
+
+6. GET /favorites/
+
+* Test Scenario 1: Retrieve a favorite item by valid ID.
+    * Input: Valid favorite ID and authentication token.
+    * Expected Outcome: Response status 200 OK with favorite item details.
+* Test Scenario 2: Attempt to retrieve a favorite item with invalid ID.
+    * Input: Invalid favorite ID and authentication token.
+    * Expected Outcome: Response status 404 Not Found.
+
+7. POST /favorites
+
+* Test Scenario 1: Add a new favorite item with valid data.
+    * Input: JSON body with valid favorite data and authentication token.
+    * Expected Outcome: Response status 201 Created with the created favorite item.
+* Test Scenario 2: Attempt to add a favorite item without authentication.
+    * Input: JSON body with valid data but no token.
+    * Expected Outcome: Response status 401 Unauthorized.
+
+8. PATCH /favorites/
+
+* Test Scenario 1: Update a favorite item with valid data.
+    * Input: Valid favorite ID, JSON body with updated data, and authentication token.
+    * Expected Outcome: Response status 200 OK with updated favorite item.
+* Test Scenario 2: Attempt to update a favorite item with invalid ID.
+    * Input: Invalid favorite ID and authentication token.
+    * Expected Outcome: Response status 404 Not Found.
+
+9. DELETE /favorites/
+
+* Test Scenario 1: Delete a favorite item by valid ID.
+    * Input: Valid favorite ID and authentication token.
+    * Expected Outcome: Response status 204 No Content.
+* Test Scenario 2: Attempt to delete a favorite item with invalid ID.
+    * Input: Invalid favorite ID and authentication token.
+    * Expected Outcome: Response status 404 Not Found.
+
+10. DELETE /favorites/clear_all
+
+* Test Scenario 1: Clear all favorites for authenticated user.
+    * Input: Valid authentication token.
+    * Expected Outcome: Response status 204 No Content.
+* Test Scenario 2: Attempt to clear all favorites without authentication.
+    * Input: No authentication token.
+    * Expected Outcome: Response status 401 Unauthorized.
+These scenarios cover a range of positive and negative cases to ensure robustness in the API functionality and security.
+4o mini
+
+
+
+
+
