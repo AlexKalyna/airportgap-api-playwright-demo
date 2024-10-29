@@ -2,15 +2,15 @@
 API test scenarios:
 
 1. GET /airports
+Positive:
 * Test Scenario 1: Retrieve a list of all airports.
     * Input: No parameters.
-    * Expected Outcome: Response status 200 OK with a list of airports in JSON format.
-* Test Scenario 2: Validate response structure.
-    * Input: No parameters.
-    * Expected Outcome: Response contains fields like id, name, location, code.
-* Test Scenario 3: Check pagination (if applicable).
-    * Input: Query parameters for pagination (e.g., ?page=1&limit=10).
-    * Expected Outcome: Response status 200 OK with paginated results.
+    * Expected Outcome: Response status 200 OK with the expected schema.
+
+* Test Scenario 2: Check pagination.
+    * Input: Query parameter for pagination with a random page number within a valid range.
+    * Expected Outcome: Response status 200 OK with paginated results. 
+
 
 2. GET /airports/:id
 
