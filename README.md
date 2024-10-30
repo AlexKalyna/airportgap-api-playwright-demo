@@ -6,36 +6,48 @@ This repository is a demo project showcasing API testing using [Playwright](http
 
 1. Clone this repository:
 
-    ```shell
+```shell
     git clone https://github.com/AlexKalyna/airportgap-api-playwright-demo.git
-    ```
+```
 
 2. Install the dependencies:
 
-    ```shell
+```shell
     npm install
-    ```
+```
 
 3. Install Playwright:
 
-    ```shell
+```shell
     npm install playwright
-    ```
+```
 
 4. Create a `.env` file in the root of the project ( ideally by copying `.env.example` ).
 
 
-5. Run the tests:
+5. Run all tests:
 
-    ```shell
+```shell
     npm run test
-    ```
+```
 
-6. Show report:
+6. Run smoke test suite:
 
-    ```shell
+```shell
+    npm run smoke
+```
+
+7. Run regression test suite:
+
+```shell
+    npm run regression
+```
+
+8. Show report:
+
+ ```shell
     npm run report
-    ```
+```
 
 ## Test Scenarios
 

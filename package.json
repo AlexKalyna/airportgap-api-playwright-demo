@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
+    "smoke": "npx playwright test -g @smoke",
+    "regression": "npx playwright test -g @regression",
     "report": "npx playwright show-report"
   },
   "author": "Oleksandr Kalyna",

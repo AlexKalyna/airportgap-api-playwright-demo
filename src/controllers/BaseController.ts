@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { config } from "../../config/config.ts";
+import { config } from "../../config/config";
 
 export default class BaseController {
     protected _client: AxiosInstance;
