@@ -2,16 +2,34 @@
 API test scenarios:
 
 1. GET /airports
-* Test Scenario 1: Retrieve a list of all airports.
-    * Input: No parameters.
-    * Expected Outcome: Response status 200 OK with a list of airports in JSON format.
-* Test Scenario 2: Validate response structure.
-    * Input: No parameters.
-    * Expected Outcome: Response contains fields like id, name, location, code.
-* Test Scenario 3: Check pagination (if applicable).
-    * Input: Query parameters for pagination (e.g., ?page=1&limit=10).
-    * Expected Outcome: Response status 200 OK with paginated results.
 
+Positive:
+* Test Scenario P.1.1: Retrieve a list of all airports.
+    * Input: No parameters.
+    * Expected Outcome: Response status 200 OK with the expected schema.
+
+* Test Scenario P.1.2: Check pagination.
+    * Input: Query parameter for pagination with a random page number within a valid range.
+    * Expected Outcome: Response status 200 OK with paginated results. 
+
+Negative:
+* Test Scenario N.1.1: Invalid Pagination Parameters.
+    * Input: Set invalid pagination parameters (e.g., ?page=-1, ?page=abc).
+    * Expected Outcome: Response status 400 Bad Request.
+
+* Test Scenario N.1.2: Out-of-Range Pagination.
+    * Input: Request a page number beyond the maximum available (e.g., ?page=99999).
+    * Expected Outcome: Response status 200 with an empty list, indicating no data on this page.
+
+* Test Scenario N.1.3: Unexpected Query Parameters.
+    * Input: Add unsupported query parameters (e.g., ?randomParam=value).
+    * Expected Outcome: Response status 200 with default data.
+
+* Test Scenario N.1.4: Incorrect Content-Type Header.
+    * Input: Omit the Content-Type header or set it incorrectly (e.g., Content-Type: application/xml).
+    * Expected Outcome: Response status 415 Unsupported Media Type.
+
+--------------------------------------------------------------------------------------------------------------------
 2. GET /airports/:id
 
 * Test Scenario 1: Retrieve an airport by valid ID.
@@ -23,6 +41,8 @@ API test scenarios:
 * Test Scenario 3: Validate response structure.
     * Input: Valid airport ID.
     * Expected Outcome: Response contains fields like id, name, location, code.
+
+--------------------------------------------------------------------------------------------------------------------
 
 3. POST /airports/distance
 
@@ -36,6 +56,8 @@ API test scenarios:
     * Input: JSON body with two valid airport IDs.
     * Expected Outcome: Response contains fields like distance, unit.
 
+--------------------------------------------------------------------------------------------------------------------
+
 4. POST /tokens
 
 * Test Scenario 1: Create a new token with valid credentials.
@@ -48,6 +70,8 @@ API test scenarios:
     * Input: JSON body with valid credentials.
     * Expected Outcome: Response contains fields like token, expires_in.
 
+--------------------------------------------------------------------------------------------------------------------
+
 5. GET /favorites
 
 * Test Scenario 1: Retrieve favorites for authenticated user.
@@ -56,6 +80,8 @@ API test scenarios:
 * Test Scenario 2: Access favorites without authentication.
     * Input: No authentication token.
     * Expected Outcome: Response status 401 Unauthorized.
+
+--------------------------------------------------------------------------------------------------------------------
 
 6. GET /favorites/
 
@@ -66,6 +92,8 @@ API test scenarios:
     * Input: Invalid favorite ID and authentication token.
     * Expected Outcome: Response status 404 Not Found.
 
+--------------------------------------------------------------------------------------------------------------------
+
 7. POST /favorites
 
 * Test Scenario 1: Add a new favorite item with valid data.
@@ -74,6 +102,8 @@ API test scenarios:
 * Test Scenario 2: Attempt to add a favorite item without authentication.
     * Input: JSON body with valid data but no token.
     * Expected Outcome: Response status 401 Unauthorized.
+
+--------------------------------------------------------------------------------------------------------------------
 
 8. PATCH /favorites/
 
@@ -84,6 +114,8 @@ API test scenarios:
     * Input: Invalid favorite ID and authentication token.
     * Expected Outcome: Response status 404 Not Found.
 
+--------------------------------------------------------------------------------------------------------------------
+
 9. DELETE /favorites/
 
 * Test Scenario 1: Delete a favorite item by valid ID.
@@ -92,6 +124,8 @@ API test scenarios:
 * Test Scenario 2: Attempt to delete a favorite item with invalid ID.
     * Input: Invalid favorite ID and authentication token.
     * Expected Outcome: Response status 404 Not Found.
+
+--------------------------------------------------------------------------------------------------------------------
 
 10. DELETE /favorites/clear_all
 

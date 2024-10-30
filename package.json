@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
+    "smoke": "npx playwright test -g @smoke",
+    "regression": "npx playwright test -g @regression",
     "report": "npx playwright show-report"
   },
   "author": "Oleksandr Kalyna",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.6.8",
+    "axios": "^1.7.7",
     "dotenv": "^16.4.5",
+    "joi": "^17.13.3",
     "playwright": "^1.43.0"
   },
   "devDependencies": {
