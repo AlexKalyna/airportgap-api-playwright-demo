@@ -1,5 +1,5 @@
 import { AxiosHeaders } from './../../../node_modules/axios/index.d';
-import Joi from 'Joi';
+import Joi from 'joi';
 import { expect, test } from '@playwright/test';
 import PublicAirportsController from 'src/controllers/PublicAirportsController';
 import * as schema from 'src/constants/apiResponseSchemas/getResponseSchemas';
