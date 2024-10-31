@@ -1,5 +1,5 @@
 import { AxiosHeaders } from './../../../node_modules/axios/index.d';
-import joi from 'joi';
+import Joi from 'joi';
 import { expect, test } from '@playwright/test';
 import PublicAirportsController from 'src/controllers/PublicAirportsController';
 import * as schema from 'src/constants/apiResponseSchemas/getResponseSchemas';
@@ -15,7 +15,7 @@ test.describe('API GET/airports', () => {
         const response: any = await publicClient.getAirports();
         expect(response.status).toBe(200);
         expect(response.statusText).toBe('OK');
-        joi.assert(await response.data, joi.object(schema.GET_ALL_AIRPORTS_SCHEMA));
+        Joi.assert(await response.data, Joi.object(schema.GET_ALL_AIRPORTS_SCHEMA));
     });
 
     test('Check pagination',{

@@ -1,4 +1,4 @@
-import Joi from 'Joi';
+import Joi from 'joi';
 
 export const GET_ALL_AIRPORTS_SCHEMA = {
     data: Joi.array().items(
