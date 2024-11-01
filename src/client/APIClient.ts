@@ -5,6 +5,7 @@ import { UserData } from '../data/types/types';
 
 class APIClient {
   auth: AuthController;
+
   userAirports: UserAirportsController;
 
   constructor(options) {
