@@ -22,28 +22,17 @@ This repository is a demo project showcasing API testing using [Playwright](http
     npm install playwright
 ```
 
-4. Create a `.env` file in the root of the project ( ideally by copying `.env.example` ).
+4. Create a `.env.<environment name>` files in `envs` folder of the project ( ideally by copying `.env.localhost.example` ).
 
 
-5. Run all tests:
+5. Run all tests in production environment:
 
 ```shell
     npm run test
 ```
+For other environments see `scripts` in the package.json file
 
-6. Run smoke test suite:
-
-```shell
-    npm run smoke
-```
-
-7. Run regression test suite:
-
-```shell
-    npm run regression
-```
-
-8. Show report:
+6. Show report:
 
  ```shell
     npm run report
