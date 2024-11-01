@@ -4,7 +4,10 @@
   "description": "demo project for playwright API tests",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test",
+    "test:localhost": "NODE_ENV=localhost npx playwright test",
+    "test:develop": "NODE_ENV=develop npx playwright test",
+    "test:staging": "NODE_ENV=staging npx playwright test",
+    "test": "NODE_ENV=production npx playwright test",
     "smoke": "npx playwright test -g @smoke",
     "regression": "npx playwright test -g @regression",
     "report": "npx playwright show-report",

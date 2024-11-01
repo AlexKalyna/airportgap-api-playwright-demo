@@ -3,7 +3,8 @@ import path from 'path';
 
 
 const env = process.env.NODE_ENV || 'local';
-const envFilePath = path.resolve(__dirname, `../.env.${env}`);
+const envFilePath = path.resolve(__dirname, `../envs/.env.${env}`);
+console.log("Path to file: ", envFilePath);
 
 dotenv.config({ path: envFilePath });
 

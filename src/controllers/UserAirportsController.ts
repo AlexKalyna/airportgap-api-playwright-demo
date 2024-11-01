@@ -5,10 +5,6 @@ import querystring from 'querystring';
 export default class UserAirportsController extends BaseController {
   private readonly USER_AIRPORTS_PATH: string = '/api/airports';
 
-  constructor(options: any) {
-    super(options);
-  }
-
   async getUserAirports() {
     return this._client.get(this.USER_AIRPORTS_PATH);
   }
