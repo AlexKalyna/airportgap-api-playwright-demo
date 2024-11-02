@@ -1,33 +1,38 @@
 name: api tests
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 jobs:
+  eslint-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: install npm deps
+      run: npm ci --legacy-peer-deps
+    - name: running eslint
+      run: npm run lint
+
   full-api:
+    needs: eslint-check
     env:
       HOME: /root
+      API_URL: ${{ vars.API_URL }}
+      HTTP_CREDENTIALS_EMAIL: ${{ vars.HTTP_CREDENTIALS_EMAIL }}
+      HTTP_CREDENTIALS_PASSWORD: ${{ secrets.HTTP_CREDENTIALS_PASSWORD }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.48.1-jammy
-    # strategy:
-    #   fail-fast: false
-      # matrix:
-      #   shardIndex: [1, 2, 3]
-      #   shardTotal: [3]
     steps:
     - uses: actions/checkout@v4
     - name: install npm deps
-      run: npm ci
+      run: npm ci --legacy-peer-deps
     - name: running api tests
-      # run: npm test -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       run: npm test
     - uses: actions/upload-artifact@v4
       if: always()
       with:
-        # name: playwright-report-${{ matrix.shardIndex }}
-        # name: playwright-report-html
         path: playwright-report/
         retention-days: 7
