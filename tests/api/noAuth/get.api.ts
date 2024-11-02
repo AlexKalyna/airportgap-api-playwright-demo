@@ -90,3 +90,19 @@ test.describe('API GET/airports', () => {
       });
     });
   });
+
+  test.describe('API GET/airports', () => {
+    test.describe('Positive tests', () => {
+      test('Retrieve a list of all airports ',{
+          tag: ['@P.1.1', '@smoke', '@regression']
+        }, async () => {
+          const response: any = await publicClient.getAirports();
+          expect(response.status).toBe(200);
+          expect(response.statusText).toBe('OK');
+          Joi.assert(await response.data, Joi.object(schema.GET_ALL_AIRPORTS_SCHEMA));
+      });
+
+    test.describe('Negative tests', () => {
+    });
+  });
+});
