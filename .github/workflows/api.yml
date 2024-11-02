@@ -1,11 +1,21 @@
 name: api tests
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 jobs:
+  eslint-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: install npm deps
+      run: npm ci
+    - name: running eslint
+      run: npm run eslint
+  
   full-api:
+    needs: eslint-check
     env:
       HOME: /root
     timeout-minutes: 60
