@@ -12,7 +12,7 @@ jobs:
     - name: install npm deps
       run: npm ci --legacy-peer-deps
     - name: running eslint
-      run: npm run eslint
+      run: npm run lint
   
   full-api:
     needs: eslint-check
