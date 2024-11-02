@@ -29,6 +29,11 @@ jobs:
     - uses: actions/checkout@v4
     - name: install npm deps
       run: npm ci --legacy-peer-deps
+    - name: print environment variables
+      run: |
+        echo "API_URL: $API_URL"
+        echo "HTTP_CREDENTIALS_EMAIL: $HTTP_CREDENTIALS_EMAIL"
+        echo "HTTP_CREDENTIALS_PASSWORD: $HTTP_CREDENTIALS_PASSWORD"
     - name: running api tests (production)
       env:
         NODE_ENV: production
