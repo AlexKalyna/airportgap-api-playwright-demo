@@ -112,6 +112,7 @@ test.describe('API GET/airports', () => {
         const response: any = await publicClient.getAirportById(invalidAirportId);
         expect(response.status).toBe(404);
         expect(response.statusText).toBe('Not Found');
+        expect(response.data.errors[0].detail).toBe('The page you requested could not be found');
     });
     
     });
