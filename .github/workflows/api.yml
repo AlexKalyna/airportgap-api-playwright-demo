@@ -30,7 +30,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: install npm deps
-      run: pm ci --legacy-peer-deps
+      run: npm ci --legacy-peer-deps
     - name: running api tests
       # run: npm test -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       run: npm test
