@@ -1,6 +1,8 @@
 
 API test scenarios:
 
+No Authentication:
+--------------------------------------------------------------------------------------------------------------------
 1. GET /airports
 
 Positive:
@@ -62,6 +64,9 @@ Negative:
     * Input: Attempt to use a method other than GET (e.g., POST, PUT, DELETE) on the /airports/:id endpoint.
     * Expected Outcome: Response status 405 Method Not Allowed, with a message indicating that only the GET method is allowed.
 
+--------------------------------------------------------------------------------------------------------------------
+
+Authentication required:
 --------------------------------------------------------------------------------------------------------------------
 
 3. POST /airports/distance

@@ -7,3 +7,11 @@ export function getPageNumberFromURL(url: string): number | null {
   const match = url.match(regex);
   return match ? parseInt(match[1], 10) : null;
 }
+
+export function getRandomAirportID(airportIDs: string[]): string {
+  if (airportIDs.length === 0) {
+    throw new Error('The array of airport IDs is empty.');
+  }
+  const randomIndex = Math.floor(Math.random() * airportIDs.length);
+  return airportIDs[randomIndex];
+}

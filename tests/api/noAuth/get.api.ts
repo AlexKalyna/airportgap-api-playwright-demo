@@ -3,7 +3,8 @@ import Joi from 'joi';
 import { expect, test } from '@playwright/test';
 import PublicAirportsController from 'src/controllers/PublicAirportsController';
 import * as schema from 'src/constants/apiResponseSchemas/getResponseSchemas';
-import { getPageNumberFromURL, getRandomNumberInRange } from 'src/helpers/helpers';
+import { getPageNumberFromURL, getRandomNumberInRange, getRandomAirportID } from 'src/helpers/helpers';
+import { airportIDs } from 'src/data/airports';
 
 const publicClient = new PublicAirportsController();
 
@@ -91,18 +92,28 @@ test.describe('API GET/airports', () => {
     });
   });
 
-  test.describe('API GET/airports', () => {
+  test.describe('API GET/airports/:id', () => {
     test.describe('Positive tests', () => {
-      test('Retrieve a list of all airports ',{
-          tag: ['@P.1.1', '@smoke', '@regression']
+      test('Retrieve an airport by valid ID',{
+          tag: ['@P.2.1', '@smoke', '@regression']
         }, async () => {
-          const response: any = await publicClient.getAirports();
+          const airportId: string = getRandomAirportID(airportIDs);
+          const response: any = await publicClient.getAirportById(airportId);
           expect(response.status).toBe(200);
           expect(response.statusText).toBe('OK');
-          Joi.assert(await response.data, Joi.object(schema.GET_ALL_AIRPORTS_SCHEMA));
+          Joi.assert(await response.data, Joi.object(schema.GET_AIRPORT_BY_ID_SCHEMA));
       });
 
     test.describe('Negative tests', () => {
+      test('Invalid Airport ID (Non-Existent)',{
+        tag: ['@N.2.1', '@smoke', '@regression']
+      }, async () => {
+        const invalidAirportId: string = 'OPPA';
+        const response: any = await publicClient.getAirportById(invalidAirportId);
+        expect(response.status).toBe(404);
+        expect(response.statusText).toBe('Not Found');
+    });
+    
     });
   });
 });
