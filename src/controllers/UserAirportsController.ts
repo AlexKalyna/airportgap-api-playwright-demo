@@ -17,4 +17,16 @@ export default class UserAirportsController extends BaseController {
       }
     });
   }
+
+  async calculateDistanceBetweenAirports(airport1: string, airport2: string) {
+    const encodedData = querystring.stringify({
+      "from": airport1,
+      "to": airport2
+    });
+    return this._client.post(`${this.USER_AIRPORTS_PATH}/distance`, encodedData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+  }
 }

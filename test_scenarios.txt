@@ -67,13 +67,17 @@ Authentication required:
 
 3. POST /airports/distance
 
-* Test Scenario 1: Calculate distance between two valid airports.
+Positive:
+* Test Scenario P.3.1: Calculate distance between two valid airports.
     * Input: JSON body with two valid airport IDs.
-    * Expected Outcome: Response status 200 OK with calculated distance.
-* Test Scenario 2: Calculate distance with invalid airport IDs.
+    * Expected Outcome: Response status 200 OK with calculated distance and valid schema.
+
+Negative:
+* Test Scenario N.3.1: Calculate distance with invalid airport IDs.
     * Input: JSON body with one or both invalid IDs.
     * Expected Outcome: Response status 400 Bad Request with an error message.
-* Test Scenario 3: Validate response structure.
+
+* Test Scenario N.3.2: Validate response structure.
     * Input: JSON body with two valid airport IDs.
     * Expected Outcome: Response contains fields like distance, unit.
 

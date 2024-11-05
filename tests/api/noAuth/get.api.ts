@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 import PublicAirportsController from 'src/controllers/PublicAirportsController';
 import * as schema from 'src/constants/apiResponseSchemas/getResponseSchemas';
 import { ERROR_SCHEMA } from 'src/constants/apiResponseSchemas/errorResponseSchema';
-import { getPageNumberFromURL, getRandomNumberInRange, getRandomAirportID, getRandomInvalidAirportID } from 'src/helpers/helpers';
+import { getPageNumberFromURL, getRandomNumberInRange, getRandomAirportID } from 'src/helpers/helpers';
 import { airportIDs, notExistingAirportIDs } from 'src/data/airports';
 
 const publicClient = new PublicAirportsController();
@@ -20,7 +20,7 @@ test.describe('API GET/airports', () => {
     });
 
     test('Check pagination',{
-        tag: ['@P.1.2', '@regression']
+        tag: ['@P.1.2', '@smoke', '@regression']
       }, async () => {
         const pageNumber = getRandomNumberInRange(2, 203);
         const response: any = await publicClient.getAirports(`?page=${pageNumber}`);
@@ -31,7 +31,7 @@ test.describe('API GET/airports', () => {
         expect(responsePageNumber).toBe(pageNumber);
     });
   });
-  
+
   test.describe('Negative tests', () => {
     test.describe('Invalid Pagination Parameters', {
       annotation: {
@@ -106,7 +106,7 @@ test.describe('API GET/airports', () => {
 
     test.describe('Negative tests', () => {
       test('Invalid Airport ID (Non-Existent)',{
-        tag: ['@N.2.1', '@smoke', '@regression']
+        tag: ['@N.2.1', '@regression']
       }, async () => {
         const invalidAirportId: string = getRandomAirportID(notExistingAirportIDs);
         const response: any = await publicClient.getAirportById(invalidAirportId);
@@ -121,7 +121,7 @@ test.describe('API GET/airports', () => {
         type: 'bug',
         description: 'https://bugtrackingtool.com/projectname/ATR-2058'
       },
-        tag: ['@N.2.2', '@smoke', '@regression']
+        tag: ['@N.2.2', '@regression']
       }, async () => {
         const response: any = await publicClient.getAirportById('1234');
         expect(response.status).toBe(400);
@@ -135,7 +135,7 @@ test.describe('API GET/airports', () => {
         type: 'bug',
         description: 'https://bugtrackingtool.com/projectname/ATR-2059'
       },
-        tag: ['@N.2.3', '@smoke', '@regression']
+        tag: ['@N.2.3', '@regression']
       }, async () => {
         const response: any = await publicClient.getAirportById('#@$');
         expect(response.status).toBe(400);
@@ -149,7 +149,7 @@ test.describe('API GET/airports', () => {
         type: 'bug',
         description: 'https://bugtrackingtool.com/projectname/ATR-2060'
       },
-        tag: ['@N.2.4', '@smoke', '@regression']
+        tag: ['@N.2.4', '@regression']
       }, async () => {
         const response: any = await publicClient.getAirportById(`' OR '1'='1`);
         expect(response.status).toBe(400);
@@ -163,7 +163,7 @@ test.describe('API GET/airports', () => {
         type: 'bug',
         description: 'https://bugtrackingtool.com/projectname/ATR-2061'
       },
-        tag: ['@N.2.4', '@smoke', '@regression']
+        tag: ['@N.2.4', '@regression']
       }, async () => {
         const airportId: string = getRandomAirportID(airportIDs);
         const response: any = await publicClient.wrongGetAirportById(airportId);
