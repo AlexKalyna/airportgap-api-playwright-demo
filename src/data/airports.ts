@@ -8,3 +8,9 @@ export const airportIDs: Array<string> = [
     'YBC', 'YBG', 'YBK', 'YBL',
     'YBR', 'YCB'
   ];
+
+export const notExistingAirportIDs: Array<string> = [
+    "ZZZ", "QWE", "RTY", "UOP", "XCV", 
+    "BNT", "PLK", "JKJ", "FRT", "VBN",
+    "GHS", "XPI", "YUU", "WSX", "EDC"
+];

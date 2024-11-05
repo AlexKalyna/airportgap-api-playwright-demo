@@ -15,3 +15,10 @@ export function getRandomAirportID(airportIDs: string[]): string {
   const randomIndex = Math.floor(Math.random() * airportIDs.length);
   return airportIDs[randomIndex];
 }
+
+export function getRandomInvalidAirportID(airportIDs: string[]): string {
+  const randomAirportID = getRandomAirportID(airportIDs);
+  const randomLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+  const invalidAirportID = randomAirportID + randomLetter;
+  return invalidAirportID;
+}

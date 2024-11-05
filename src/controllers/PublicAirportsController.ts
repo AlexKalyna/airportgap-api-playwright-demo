@@ -10,4 +10,8 @@ export default class PublicAirportsController extends BaseController {
   async getAirportById(airportId: string) {
     return this._client.get(`${this.AIRPORTS_PATH}/${airportId}`);
   }
+
+  async wrongGetAirportById(airportId: string) {
+    return this._client.post(`${this.AIRPORTS_PATH}/${airportId}`);
+  }
 }
