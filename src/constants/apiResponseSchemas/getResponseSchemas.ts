@@ -41,10 +41,14 @@ export const GET_AIRPORT_BY_ID_SCHEMA = {
       name: Joi.string().required(),
       city: Joi.string().required(),
       country: Joi.string().required(),
-      iata: Joi.string().length(3).required(),  // IATA code should be 3 characters long
-      icao: Joi.string().length(4).required(),  // ICAO code should be 4 characters long
-      latitude: Joi.string().pattern(/^[-+]?\d+(\.\d+)?$/).required(), // Validates a latitude format
-      longitude: Joi.string().pattern(/^[-+]?\d+(\.\d+)?$/).required(), // Validates a longitude format
+      iata: Joi.string().length(3).required(), // IATA code should be 3 characters long
+      icao: Joi.string().length(4).required(), // ICAO code should be 4 characters long
+      latitude: Joi.string()
+        .pattern(/^[-+]?\d+(\.\d+)?$/)
+        .required(), // Validates a latitude format
+      longitude: Joi.string()
+        .pattern(/^[-+]?\d+(\.\d+)?$/)
+        .required(), // Validates a longitude format
       altitude: Joi.number().integer().required(),
       timezone: Joi.string().required()
     }).required()
