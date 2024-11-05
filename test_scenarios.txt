@@ -1,6 +1,8 @@
 
 API test scenarios:
 
+No Authentication:
+--------------------------------------------------------------------------------------------------------------------
 1. GET /airports
 
 Positive:
@@ -10,7 +12,7 @@ Positive:
 
 * Test Scenario P.1.2: Check pagination.
     * Input: Query parameter for pagination with a random page number within a valid range.
-    * Expected Outcome: Response status 200 OK with paginated results. 
+    * Expected Outcome: Response status 200 OK with paginated results.
 
 Negative:
 * Test Scenario N.1.1: Invalid Pagination Parameters.
@@ -32,16 +34,35 @@ Negative:
 --------------------------------------------------------------------------------------------------------------------
 2. GET /airports/:id
 
-* Test Scenario 1: Retrieve an airport by valid ID.
+Positive:
+* Test Scenario P.2.1: Retrieve an airport by valid ID.
     * Input: Valid airport ID.
-    * Expected Outcome: Response status 200 OK with airport details.
-* Test Scenario 2: Retrieve an airport by invalid ID.
-    * Input: Invalid airport ID.
-    * Expected Outcome: Response status 404 Not Found with an appropriate error message.
-* Test Scenario 3: Validate response structure.
-    * Input: Valid airport ID.
-    * Expected Outcome: Response contains fields like id, name, location, code.
+    * Expected Outcome: Response status 200 OK with the expected schema.
 
+Negative:
+* Test Scenario N.2.1: Invalid Airport ID (Non-Existent).
+    * Input: Use an airport ID that does not exist in the database (e.g., /airports/INVALID_ID).
+    * Expected Outcome: Response status 404 Not Found, with an error message indicating the airport was not found and expected schema.
+
+* Test Scenario N.2.2: Malformed Airport ID (Invalid Format)
+    * Input: Use an improperly formatted ID (e.g., /airports/1234 where the ID format should not be an IATA code).
+    * Expected Outcome: Response status 400 Bad Request, with an error message about the invalid ID format.
+
+* Test Scenario N.2.3: Special Characters in Airport ID
+    * Input: Use special characters in the ID (e.g., /airports/!@#$%).
+    * Expected Outcome: Response status 400 Bad Request, with an error message about the invalid characters in the ID.
+
+* Test Scenario N.2.4: SQL Injection Attempt in Airport ID
+    * Input: Use an ID designed to test for SQL injection vulnerabilities (e.g., /airports/' OR '1'='1).
+    * Expected Outcome: Response status 400 Bad Request with an error message about the invalid characters in the ID.
+
+* Test Scenario N.2.5: Method Not Allowed
+    * Input: Attempt to use a method other than GET (e.g., POST, PUT, DELETE) on the /airports/:id endpoint.
+    * Expected Outcome: Response status 405 Method Not Allowed, with a message indicating that only the GET method is allowed.
+
+--------------------------------------------------------------------------------------------------------------------
+
+Authentication required:
 --------------------------------------------------------------------------------------------------------------------
 
 3. POST /airports/distance

@@ -1,9 +1,10 @@
-import { AxiosHeaders } from './../../../node_modules/axios/index.d';
 import Joi from 'joi';
 import { expect, test } from '@playwright/test';
 import PublicAirportsController from 'src/controllers/PublicAirportsController';
 import * as schema from 'src/constants/apiResponseSchemas/getResponseSchemas';
-import { getPageNumberFromURL, getRandomNumberInRange } from 'src/helpers/helpers';
+import { ERROR_SCHEMA } from 'src/constants/apiResponseSchemas/errorResponseSchema';
+import { getPageNumberFromURL, getRandomNumberInRange, getRandomAirportID, getRandomInvalidAirportID } from 'src/helpers/helpers';
+import { airportIDs, notExistingAirportIDs } from 'src/data/airports';
 
 const publicClient = new PublicAirportsController();
 
@@ -90,3 +91,87 @@ test.describe('API GET/airports', () => {
       });
     });
   });
+
+  test.describe('API GET/airports/:id', () => {
+    test.describe('Positive tests', () => {
+      test('Retrieve an airport by valid ID',{
+          tag: ['@P.2.1', '@smoke', '@regression']
+        }, async () => {
+          const airportId: string = getRandomAirportID(airportIDs);
+          const response: any = await publicClient.getAirportById(airportId);
+          expect(response.status).toBe(200);
+          expect(response.statusText).toBe('OK');
+          Joi.assert(await response.data, Joi.object(schema.GET_AIRPORT_BY_ID_SCHEMA));
+      });
+
+    test.describe('Negative tests', () => {
+      test('Invalid Airport ID (Non-Existent)',{
+        tag: ['@N.2.1', '@smoke', '@regression']
+      }, async () => {
+        const invalidAirportId: string = getRandomAirportID(notExistingAirportIDs);
+        const response: any = await publicClient.getAirportById(invalidAirportId);
+        expect(response.status).toBe(404);
+        expect(response.statusText).toBe('Not Found');
+        expect(response.data.errors[0].detail).toBe('The page you requested could not be found');
+        Joi.assert(await response.data, Joi.object(ERROR_SCHEMA));
+      });
+
+      test.fail ('Malformed Airport ID', {
+        annotation: {
+        type: 'bug',
+        description: 'https://bugtrackingtool.com/projectname/ATR-2058'
+      },
+        tag: ['@N.2.2', '@smoke', '@regression']
+      }, async () => {
+        const response: any = await publicClient.getAirportById('1234');
+        expect(response.status).toBe(400);
+        expect(response.statusText).toBe('Bad Request');
+        expect(response.data.errors[0].detail).toBe(`You've entered invalid airport ID`);
+        Joi.assert(await response.data, Joi.object(ERROR_SCHEMA));
+      });
+
+      test.fail ('Special Characters in Airport ID', {
+        annotation: {
+        type: 'bug',
+        description: 'https://bugtrackingtool.com/projectname/ATR-2059'
+      },
+        tag: ['@N.2.3', '@smoke', '@regression']
+      }, async () => {
+        const response: any = await publicClient.getAirportById('#@$');
+        expect(response.status).toBe(400);
+        expect(response.statusText).toBe('Bad Request');
+        expect(response.data.errors[0].detail).toBe(`You've entered invalid airport ID`);
+        Joi.assert(await response.data, Joi.object(ERROR_SCHEMA));
+      });
+
+      test.fail ('SQL Injection Attempt in Airport ID', {
+        annotation: {
+        type: 'bug',
+        description: 'https://bugtrackingtool.com/projectname/ATR-2060'
+      },
+        tag: ['@N.2.4', '@smoke', '@regression']
+      }, async () => {
+        const response: any = await publicClient.getAirportById(`' OR '1'='1`);
+        expect(response.status).toBe(400);
+        expect(response.statusText).toBe('Bad Request');
+        expect(response.data.errors[0].detail).toBe(`You've entered invalid airport ID`);
+        Joi.assert(await response.data, Joi.object(ERROR_SCHEMA));
+      });
+
+      test.fail ('Method Not Allowed', {
+        annotation: {
+        type: 'bug',
+        description: 'https://bugtrackingtool.com/projectname/ATR-2061'
+      },
+        tag: ['@N.2.4', '@smoke', '@regression']
+      }, async () => {
+        const airportId: string = getRandomAirportID(airportIDs);
+        const response: any = await publicClient.wrongGetAirportById(airportId);
+        expect(response.status).toBe(405);
+        expect(response.statusText).toBe('Method Not Allowed');
+        expect(response.data.errors[0].detail).toBe('Only GET method allowed for this request');
+        Joi.assert(await response.data, Joi.object(ERROR_SCHEMA));
+      });
+    });
+  });
+});
