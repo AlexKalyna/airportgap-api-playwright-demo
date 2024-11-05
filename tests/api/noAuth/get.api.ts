@@ -138,7 +138,6 @@ test.describe('API GET/airports', () => {
         tag: ['@N.2.3', '@smoke', '@regression']
       }, async () => {
         const response: any = await publicClient.getAirportById('#@$');
-        console.log(response.data);
         expect(response.status).toBe(400);
         expect(response.statusText).toBe('Bad Request');
         expect(response.data.errors[0].detail).toBe(`You've entered invalid airport ID`);
@@ -153,7 +152,6 @@ test.describe('API GET/airports', () => {
         tag: ['@N.2.4', '@smoke', '@regression']
       }, async () => {
         const response: any = await publicClient.getAirportById(`' OR '1'='1`);
-        console.log(response.data);
         expect(response.status).toBe(400);
         expect(response.statusText).toBe('Bad Request');
         expect(response.data.errors[0].detail).toBe(`You've entered invalid airport ID`);
@@ -169,7 +167,6 @@ test.describe('API GET/airports', () => {
       }, async () => {
         const airportId: string = getRandomAirportID(airportIDs);
         const response: any = await publicClient.wrongGetAirportById(airportId);
-        console.log(response.data);
         expect(response.status).toBe(405);
         expect(response.statusText).toBe('Method Not Allowed');
         expect(response.data.errors[0].detail).toBe('Only GET method allowed for this request');
