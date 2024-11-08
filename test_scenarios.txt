@@ -97,13 +97,13 @@ Negative:
     * Input: Malformed JSON body (e.g., missing commas, unbalanced braces).
     * Expected Outcome: Response status 400 Bad Request, with an error message about the invalid JSON structure.
 
-* Test Scenario P.3.7: Unauthorized Request (if authentication is required)
+* Test Scenario P.3.7: Unauthorized Request
     * Input: Request without proper authentication headers or with invalid credentials.
     * Expected Outcome: Response status 401 Unauthorized, with an error message about missing or invalid authentication.
 
 * Test Scenario P.3.8: Unsupported Media Type
     * Input: Request with a Content-Type header that is not application/json (e.g., text/plain).
-    * Expected Outcome: Response status 415 Unsupported Media Type, with an error message indicating the supported content type.
+    * Expected Outcome: Response status 415 Unsupported Media Type, with an error message indicating the unsupported content type.
 
 
 --------------------------------------------------------------------------------------------------------------------

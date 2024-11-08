@@ -4,7 +4,7 @@ import querystring from 'querystring';
 
 export default class UserAirportsController extends BaseController {
   private readonly USER_AIRPORTS_PATH: string = '/api/airports';
-  private readonly USER_FAVOURITES_PATH: string = '/favourites';
+  // private readonly USER_FAVOURITES_PATH: string = '/favourites';
 
   async getUserAirports() {
     return this._client.get(this.USER_AIRPORTS_PATH);
@@ -19,18 +19,20 @@ export default class UserAirportsController extends BaseController {
     });
   }
 
-  async calculateDistanceBetweenAirports(airport1?: string, airport2?: string, sendEmptyBody: boolean = false) {
-    let encodedData = '';
-    if (!sendEmptyBody) {
-      encodedData = querystring.stringify({
-        "from": airport1,
-        "to": airport2
-      });
+  async calculateDistanceBetweenAirports(
+    body: Record<string, string> = {},
+    headers: Record<string, string> = {
+      'Content-Type': 'application/x-www-form-urlencoded'
     }
+  ) {
+    let encodedData = '';
+
+    if (Object.keys(body).length > 0) {
+      encodedData = querystring.stringify(body);
+    }
+
     return this._client.post(`${this.USER_AIRPORTS_PATH}/distance`, encodedData, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
+      headers
     });
   }
 }
