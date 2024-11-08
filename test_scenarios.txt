@@ -67,15 +67,44 @@ Authentication required:
 
 3. POST /airports/distance
 
-* Test Scenario 1: Calculate distance between two valid airports.
+Positive:
+* Test Scenario P.3.1: Calculate distance between two valid airports.
     * Input: JSON body with two valid airport IDs.
-    * Expected Outcome: Response status 200 OK with calculated distance.
-* Test Scenario 2: Calculate distance with invalid airport IDs.
-    * Input: JSON body with one or both invalid IDs.
-    * Expected Outcome: Response status 400 Bad Request with an error message.
-* Test Scenario 3: Validate response structure.
-    * Input: JSON body with two valid airport IDs.
-    * Expected Outcome: Response contains fields like distance, unit.
+    * Expected Outcome: Response status 200 OK with calculated distance and valid schema.
+
+Negative:
+* Test Scenario P.3.1: Invalid Airport ID (Non-Existent)
+    * Input: JSON body with one or both airport IDs that do not exist in the database.
+    * Expected Outcome: Response status 422 Unprocessable Entity, with an error message:  "Please enter valid 'from' and 'to' airports."
+
+* Test Scenario P.3.2: Malformed Airport IDs (Invalid Format)
+    * Input: JSON body with airport IDs that are improperly formatted (e.g., numeric or too short/long strings).
+    * Expected Outcome: Response status 422 Unprocessable Entity, with an error message:  "Please enter valid 'from' and 'to' airports."
+
+* Test Scenario P.3.3: Missing Airport IDs in Request Body
+    * Input: JSON body missing one or both of the airport ID fields.
+    * Expected Outcome: Response status 400 Bad Request, with an error message indicating that both airport IDs are required.
+
+* Test Scenario P.3.4: Empty Request Body
+    * Input: An empty JSON body {}.
+    * Expected Outcome: Response status 400 Bad Request, with an error message about missing required fields.
+
+* Test Scenario P.3.5: Identical Airport IDs (Same Airport)
+    * Input: JSON body with the same airport ID for both from_airport and to_airport.
+    * Expected Outcome: Response status 200 Ok, with  0  distanse value.
+
+* Test Scenario P.3.6: Invalid JSON Format
+    * Input: Malformed JSON body (e.g., missing commas, unbalanced braces).
+    * Expected Outcome: Response status 400 Bad Request, with an error message about the invalid JSON structure.
+
+* Test Scenario P.3.7: Unauthorized Request
+    * Input: Request without proper authentication headers or with invalid credentials.
+    * Expected Outcome: Response status 401 Unauthorized, with an error message about missing or invalid authentication.
+
+* Test Scenario P.3.8: Unsupported Media Type
+    * Input: Request with a Content-Type header that is not application/json (e.g., text/plain).
+    * Expected Outcome: Response status 415 Unsupported Media Type, with an error message indicating the unsupported content type.
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -104,7 +133,7 @@ Authentication required:
 
 --------------------------------------------------------------------------------------------------------------------
 
-6. GET /favorites/
+6. GET /favorites/:id
 
 * Test Scenario 1: Retrieve a favorite item by valid ID.
     * Input: Valid favorite ID and authentication token.

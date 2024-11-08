@@ -1,5 +1,4 @@
 export const airportIDs: Array<string> = [
-  'GKA',
   'MAG',
   'HGU',
   'LAE',
