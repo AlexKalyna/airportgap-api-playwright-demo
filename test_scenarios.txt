@@ -113,8 +113,7 @@ Negative:
 Positive:
 * Test Scenario P.4.1: Create a new token with valid credentials.
     * Input: JSON body with valid username and password.
-    * Expected Outcome: Response status 200 OK with a token.
-
+    * Expected Outcome: Response status 200 OK with a token and valid expected schema.
 
 Negative:
 * Test Scenario N.3.1: Missing Credentials
@@ -161,10 +160,12 @@ Negative:
 
 5. GET /favorites
 
-* Test Scenario 1: Retrieve favorites for authenticated user.
+* Test Scenario P.5.1: Retrieve favorites for authenticated user.
     * Input: Valid authentication token.
     * Expected Outcome: Response status 200 OK with a list of favorite items.
-* Test Scenario 2: Access favorites without authentication.
+
+Negative:
+* Test Scenario N.5.1: Access favorites without authentication.
     * Input: No authentication token.
     * Expected Outcome: Response status 401 Unauthorized.
 
@@ -172,10 +173,13 @@ Negative:
 
 6. GET /favorites/:id
 
-* Test Scenario 1: Retrieve a favorite item by valid ID.
+Positive:
+* Test Scenario P.6.1: Retrieve a favorite item by valid ID.
     * Input: Valid favorite ID and authentication token.
     * Expected Outcome: Response status 200 OK with favorite item details.
-* Test Scenario 2: Attempt to retrieve a favorite item with invalid ID.
+
+Negative:
+* Test Scenario N.6.1: Attempt to retrieve a favorite item with invalid ID.
     * Input: Invalid favorite ID and authentication token.
     * Expected Outcome: Response status 404 Not Found.
 
@@ -183,12 +187,51 @@ Negative:
 
 7. POST /favorites
 
-* Test Scenario 1: Add a new favorite item with valid data.
+Positive:
+* Test Scenario P.7.1: Add a new favorite item with valid data.
     * Input: JSON body with valid favorite data and authentication token.
-    * Expected Outcome: Response status 201 Created with the created favorite item.
-* Test Scenario 2: Attempt to add a favorite item without authentication.
-    * Input: JSON body with valid data but no token.
-    * Expected Outcome: Response status 401 Unauthorized.
+    * Expected Outcome: Response status 201 Created with the created favorite item and valid expected schema.
+
+Negative:
+* Test Scenario N.7.1: Attempt to add a favorite item without authentication.
+    * Input: JSON body with valid favorite data but without an authentication token.
+    * Expected Outcome: Response status 401 Unauthorized with an error message indicating that authentication is required.
+
+* Test Scenario N.7.2: Invalid Authentication Token
+    * Input: JSON body with valid favorite data but an invalid or expired authentication token.
+    * Expected Outcome: Response status 401 Unauthorized with an error message indicating an invalid or expired token.
+
+* Test Scenario N.7.3: Missing Required Fields in Favorite Data
+    * Input: JSON body with incomplete favorite data (e.g., missing required fields like item_id or user_id).
+    * Expected Outcome: Response status 400 Bad Request with an error message specifying which fields are missing.
+
+* Test Scenario N.7.4: Invalid Data Format in JSON Body
+    * Input: JSON body with incorrectly formatted data (e.g., item_id as a string instead of an integer).
+    * Expected Outcome: Response status 400 Bad Request with an error message indicating the type mismatch.
+
+* Test Scenario N.7.5: Empty JSON Body
+    * Input: An empty JSON body (no data provided).
+    * Expected Outcome: Response status 400 Bad Request with an error message specifying that the request body is empty.
+
+* Test Scenario N.7.6: Unsupported Content-Type
+    * Input: Sending the request with a content type other than application/json (e.g., text/plain).
+    * Expected Outcome: Response status 415 Unsupported Media Type with an error message indicating unsupported content type.
+
+* Test Scenario N.7.7: Adding Duplicate Favorite Item
+    * Input: JSON body with favorite data for an item that the user has already added to their favorites.
+    * Expected Outcome: Response status 409 Conflict with an error message indicating that the item is already in the user's favorites.
+
+* Test Scenario N.7.8: Exceeding Maximum Favorites Limit
+    * Input: JSON body with valid favorite data, but the user has reached the maximum number of favorite items allowed.
+    * Expected Outcome: Response status 403 Forbidden or 409 Conflict with an error message indicating the limit has been reached.
+
+* Test Scenario N.7.9: SQL Injection Attempt in Favorite Data
+    * Input: JSON body with malicious SQL code in fields such as item_id or name.
+    * Expected Outcome: Response status 400 Bad Request or 403 Forbidden with an error message, no favorite created, and no application errors or security vulnerabilities exposed.
+
+* Test Scenario N.7.10: Unauthorized User Trying to Add Favorite for Another User
+    * Input: JSON body with user_id set to a different user’s ID.
+    * Expected Outcome: Response status 403 Forbidden with an error message indicating that the user is not authorized to add favorites for another user.
 
 --------------------------------------------------------------------------------------------------------------------
 
