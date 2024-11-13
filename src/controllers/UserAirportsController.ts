@@ -35,4 +35,26 @@ export default class UserAirportsController extends BaseController {
       headers
     });
   }
+
+  async createToken(
+    body: Record<string, string> = {},
+    headers: Record<string, string> = {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  ) {
+    let encodedData = '';
+
+    if (Object.keys(body).length > 0) {
+      encodedData = querystring.stringify(body);
+    }
+    return this._client.post('/token', encodedData, { headers });
+  }
+  // async createToken(
+  //   body: Record<string, any> = {},
+  //   headers: Record<string, string> = {
+  //     'Content-Type': 'application/json'
+  //   }
+  // ) {
+  //   return this._client.post('/token', body, { headers });
+  // }
 }

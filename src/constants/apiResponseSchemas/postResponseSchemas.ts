@@ -30,3 +30,7 @@ export const AIRPORT_DISTANCE_SCHEMA = {
     }).required()
   }).required()
 };
+
+export const USER_TOKEN_SCHEMA = {
+  token: Joi.string().alphanum().length(24).required()
+};
