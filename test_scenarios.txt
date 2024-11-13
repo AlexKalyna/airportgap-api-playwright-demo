@@ -192,7 +192,7 @@ Negative:
 
 --------------------------------------------------------------------------------------------------------------------
 
-8. PATCH /favorites/
+8. PATCH /favorites/:id
 
 * Test Scenario 1: Update a favorite item with valid data.
     * Input: Valid favorite ID, JSON body with updated data, and authentication token.
@@ -203,7 +203,7 @@ Negative:
 
 --------------------------------------------------------------------------------------------------------------------
 
-9. DELETE /favorites/
+9. DELETE /favorites/:id
 
 * Test Scenario 1: Delete a favorite item by valid ID.
     * Input: Valid favorite ID and authentication token.

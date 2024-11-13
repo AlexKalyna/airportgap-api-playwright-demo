@@ -233,4 +233,36 @@ test.describe('API POST/airports', () => {
       );
     });
   });
+  test.describe('API POST/favorites', () => {
+    test.describe('Positive tests', () => {
+      test(
+        'Create a new token with valid credentials',
+        {
+          tag: ['@P.4.1', '@smoke', '@regression']
+        },
+        async () => {
+          // const email: string = config.httpCredentials.email;
+          // const password: string = config.httpCredentials.password;
+          const requestBody = { email: 'test@airportgap.com', password: 'airportgappassword' };
+          const requestHeaders = { Authorization: '' };
+          console.log(requestBody);
+          const response = await client.userAirports.createToken(requestBody, requestHeaders);
+          console.log(response);
+          // expect(response.status).toBe(200);
+          // expect(response.statusText).toBe('OK');
+          // Joi.assert(await response.data, Joi.object(schemaPost.USER_TOKEN_SCHEMA));
+        }
+      );
+    });
+
+    test.describe('Negative tests', () => {
+      test(
+        'Missing Credentials)',
+        {
+          tag: ['@N.4.1', '@regression']
+        },
+        async () => {}
+      );
+    });
+  });
 });
