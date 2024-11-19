@@ -1,9 +1,11 @@
 import { expect, test, request } from '@playwright/test';
+import faker from 'faker';
 import APIClient from '../../../src/client/APIClient';
 import { getData } from '../../../src/data/dict/userData';
 import Joi from 'joi';
 import * as schemaPost from 'src/constants/apiResponseSchemas/postResponseSchemas';
 import { getRandomAirportID, getRandomInvalidAirportID } from 'src/helpers/helpers';
+import * as helper from 'src/helpers/helpers';
 import { airportIDs, notExistingAirportIDs } from 'src/data/airports';
 import { ERROR_SCHEMA } from 'src/constants/apiResponseSchemas/errorResponseSchema';
 import { config } from 'config/config';
@@ -233,24 +235,25 @@ test.describe('API POST/airports', () => {
       );
     });
   });
+
   test.describe('API POST/favorites', () => {
     test.describe('Positive tests', () => {
       test(
-        'Create a new token with valid credentials',
+        'Add a new favorite item with valid data',
         {
-          tag: ['@P.4.1', '@smoke', '@regression']
+          tag: ['@P.7.1', '@smoke', '@regression']
         },
         async () => {
-          // const email: string = config.httpCredentials.email;
-          // const password: string = config.httpCredentials.password;
-          const requestBody = { email: 'test@airportgap.com', password: 'airportgappassword' };
-          const requestHeaders = { Authorization: '' };
-          console.log(requestBody);
-          const response = await client.userAirports.createToken(requestBody, requestHeaders);
-          console.log(response);
-          // expect(response.status).toBe(200);
-          // expect(response.statusText).toBe('OK');
-          // Joi.assert(await response.data, Joi.object(schemaPost.USER_TOKEN_SCHEMA));
+          const airportID = helper.getRandomAirportID(airportIDs);
+          const note: string = faker.lorem.words();
+          const requestBody = { airport_id: airportID, note: note };
+          const response = await client.userAirports.addAirportToFavorites(requestBody);
+
+          expect(response.status).toBe(201);
+          expect(response.statusText).toBe('Created');
+          Joi.assert(await response.data, Joi.object(schemaPost.USER_FAVORITES_SCHEMA));
+          expect(response.data.data.attributes.note).toBe(note);
+          expect(response.data.data.attributes.airport.iata).toBe(airportID);
         }
       );
     });
