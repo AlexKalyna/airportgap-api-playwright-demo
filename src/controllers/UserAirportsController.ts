@@ -44,4 +44,8 @@ export default class UserAirportsController extends BaseController {
   async addAirportToFavorites(body: Record<string, string> = {}, headers: Record<string, string> = {}) {
     return this.postRequest(this.USER_FAVOURITES_PATH, body, headers);
   }
+
+  async removeAllAirportsFromFavorites(headers: Record<string, string> = {}) {
+    return this._client.delete(`${this.USER_FAVOURITES_PATH}/clear_all`, headers);
+  }
 }
