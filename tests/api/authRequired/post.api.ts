@@ -258,14 +258,15 @@ test.describe('API POST/airports', () => {
       );
     });
 
-    test.describe('Negative tests', () => {
-      test(
-        'Missing Credentials)',
-        {
-          tag: ['@N.4.1', '@regression']
-        },
-        async () => {}
-      );
-    });
+    //  TBD
+    //     test.describe('Negative tests', () => {
+    //       test(
+    //         'Attempt to add a favorite item without authentication',
+    //         {
+    //           tag: ['@N.7.1', '@regression']
+    //         },
+    //         async () => {}
+    //       );
+    //     });
   });
 });
