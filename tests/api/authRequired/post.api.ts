@@ -214,13 +214,12 @@ test.describe('API POST/airports', () => {
           // const email: string = config.httpCredentials.email;
           // const password: string = config.httpCredentials.password;
           const requestBody = { email: 'test@airportgap.com', password: 'airportgappassword' };
+
           const requestHeaders = { Authorization: '' };
-          console.log(requestBody);
           const response = await client.userAirports.createToken(requestBody, requestHeaders);
-          console.log(response);
-          // expect(response.status).toBe(200);
-          // expect(response.statusText).toBe('OK');
-          // Joi.assert(await response.data, Joi.object(schemaPost.USER_TOKEN_SCHEMA));
+          expect(response.status).toBe(200);
+          expect(response.statusText).toBe('OK');
+          Joi.assert(await response.data, Joi.object(schemaPost.USER_TOKEN_SCHEMA));
         }
       );
     });
