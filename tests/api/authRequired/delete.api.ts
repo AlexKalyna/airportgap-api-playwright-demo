@@ -26,14 +26,14 @@ test.describe('API DELETE /favorites/clear_al', () => {
       }
     );
   });
-
-  test.describe('Negative tests', () => {
-    test(
-      'YOUR TEST NAME',
-      {
-        tag: ['@N.13.1', '@regression']
-      },
-      async () => {}
-    );
-  });
+//TBD
+  // test.describe('Negative tests', () => {
+  //   test(
+  //     'YOUR TEST NAME',
+  //     {
+  //       tag: ['@N.13.1', '@regression']
+  //     },
+  //     async () => {}
+  //   );
+  // });
 });
