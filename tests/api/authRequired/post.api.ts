@@ -237,8 +237,9 @@ test.describe('API POST/airports', () => {
 
   test.describe('API POST/favorites', () => {
     test.describe('Positive tests', () => {
-      test.beforeAll('Remove all favorite airports', async () => {
+      test.beforeEach('Remove all favorite airports', async () => {
         const response = await client.userAirports.removeAllAirportsFromFavorites();
+        console.log(response);
         expect(response.status).toBe(204);
       });
       test(
