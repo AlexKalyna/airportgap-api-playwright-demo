@@ -11,21 +11,21 @@ test.beforeAll(async () => {
 
 test.describe('API DELETE /favorites/clear_al', () => {
   test.describe('Positive tests', () => {
-    // test(
-    //   'Clear all favorites for authenticated user',
-    //   {
-    //     tag: ['@P.13.1', '@smoke', '@regression']
-    //   },
-    //   async () => {
-    //     const response = await client.userAirports.removeAllAirportsFromFavorites();
+    test(
+      'Clear all favorites for authenticated user',
+      {
+        tag: ['@P.13.1', '@smoke', '@regression']
+      },
+      async () => {
+        const response = await client.userAirports.removeAllAirportsFromFavorites();
 
-    //     expect(response.status).toBe(204);
-    //     expect(response.statusText).toBe('No Content');
-    //     expect(response.data).toBe('');
-    //   }
-    // );
+        expect(response.status).toBe(204);
+        expect(response.statusText).toBe('No Content');
+        expect(response.data).toBe('');
+      }
+    );
   });
-//TBD
+  //TBD
   // test.describe('Negative tests', () => {
   //   test(
   //     'YOUR TEST NAME',
