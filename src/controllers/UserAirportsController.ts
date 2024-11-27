@@ -48,4 +48,8 @@ export default class UserAirportsController extends BaseController {
   async removeAllAirportsFromFavorites(headers: Record<string, string> = {}) {
     return this._client.delete(`${this.USER_FAVOURITES_PATH}/clear_all`, headers);
   }
+
+  async getFavouriteAirports(parameter: string = '/', headers: Record<string, string> = {}): Promise<unknown> {
+    return this._client.get(this.USER_FAVOURITES_PATH + parameter, { headers });
+  }
 }
