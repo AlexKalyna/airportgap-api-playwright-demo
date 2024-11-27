@@ -35,6 +35,22 @@ test.describe('API GET/favorites', () => {
         Joi.assert(await response.data, Joi.object(schema.GET_FAVORITE_AIRPORTS_SCHEMA));
       }
     );
+    test(
+      'Returns empty list if no favorite airports saved to your Airport Gap account.',
+      {
+        tag: ['@P.5.2', '@smoke', '@regression']
+      },
+      async () => {
+        // Removing all airports from favorites to make sure the list is empty
+        const postResponse = await client.userAirports.removeAllAirportsFromFavorites();
+        expect(postResponse.status).toBe(204);
+        // Main test
+        const response = await client.userAirports.getFavouriteAirports();
+        expect(response.status).toBe(200);
+        expect(response.statusText).toBe('OK');
+        Joi.assert(await response.data, Joi.object(schema.GET_AIRPORTS_EMPTY_SCHEMA));
+      }
+    );
     //   });
 
     //   test('Return the first page of airports in the Airport Gap database @smoke @regression', async () => {
