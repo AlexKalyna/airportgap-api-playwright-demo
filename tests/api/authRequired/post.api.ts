@@ -1,9 +1,11 @@
 import { expect, test, request } from '@playwright/test';
+import faker from 'faker';
 import APIClient from '../../../src/client/APIClient';
 import { getData } from '../../../src/data/dict/userData';
 import Joi from 'joi';
 import * as schemaPost from 'src/constants/apiResponseSchemas/postResponseSchemas';
 import { getRandomAirportID, getRandomInvalidAirportID } from 'src/helpers/helpers';
+import * as helper from 'src/helpers/helpers';
 import { airportIDs, notExistingAirportIDs } from 'src/data/airports';
 import { ERROR_SCHEMA } from 'src/constants/apiResponseSchemas/errorResponseSchema';
 import { config } from 'config/config';
@@ -200,5 +202,74 @@ test.describe('API POST/airports', () => {
         );
       }
     );
+  });
+  test.describe('API POST/token', () => {
+    test.describe('Positive tests', () => {
+      test(
+        'Create a new token with valid credentials',
+        {
+          tag: ['@P.4.1', '@smoke', '@regression']
+        },
+        async () => {
+          // const email: string = config.httpCredentials.email;
+          // const password: string = config.httpCredentials.password;
+          const requestBody = { email: 'test@airportgap.com', password: 'airportgappassword' };
+
+          const requestHeaders = { Authorization: '' };
+          const response = await client.userAirports.createToken(requestBody, requestHeaders);
+          expect(response.status).toBe(200);
+          expect(response.statusText).toBe('OK');
+          Joi.assert(await response.data, Joi.object(schemaPost.USER_TOKEN_SCHEMA));
+        }
+      );
+    });
+
+    test.describe('Negative tests', () => {
+      test(
+        'Missing Credentials)',
+        {
+          tag: ['@N.4.1', '@regression']
+        },
+        async () => {}
+      );
+    });
+  });
+
+  test.describe('API POST/favorites', () => {
+    test.describe('Positive tests', () => {
+      test.beforeEach('Remove all favorite airports', async () => {
+        const response = await client.userAirports.removeAllAirportsFromFavorites();
+        expect(response.status).toBe(204);
+      });
+      test(
+        'Add a new favorite item with valid data',
+        {
+          tag: ['@P.7.1', '@smoke', '@regression']
+        },
+        async () => {
+          const airportID = helper.getRandomAirportID(airportIDs);
+          const note: string = faker.lorem.words();
+          const requestBody = { airport_id: airportID, note: note };
+          const response = await client.userAirports.addAirportToFavorites(requestBody);
+
+          expect(response.status).toBe(201);
+          expect(response.statusText).toBe('Created');
+          Joi.assert(await response.data, Joi.object(schemaPost.USER_FAVORITES_SCHEMA));
+          expect(response.data.data.attributes.note).toBe(note);
+          expect(response.data.data.attributes.airport.iata).toBe(airportID);
+        }
+      );
+    });
+
+    //  TBD
+    //     test.describe('Negative tests', () => {
+    //       test(
+    //         'Attempt to add a favorite item without authentication',
+    //         {
+    //           tag: ['@N.7.1', '@regression']
+    //         },
+    //         async () => {}
+    //       );
+    //     });
   });
 });

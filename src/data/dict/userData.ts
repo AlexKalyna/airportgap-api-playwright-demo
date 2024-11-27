@@ -1,12 +1,17 @@
 import { config } from '../../../config/config';
 
-export const data = {
-  userData: {
-    email: config.httpCredentials.email || '',
-    password: config.httpCredentials.password || ''
-  }
-};
+interface UserCredentials {
+  email: string;
+  password: string;
+}
 
-export function getData() {
-  return data.userData;
+export function getData(): UserCredentials {
+  const email = config.httpCredentials?.email;
+  const password = config.httpCredentials?.password;
+
+  if (!email || !password) {
+    throw new Error('Authentication credentials are missing. Please set them in the configuration.');
+  }
+
+  return { email, password };
 }

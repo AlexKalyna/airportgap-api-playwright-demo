@@ -17,8 +17,10 @@
   "author": "Oleksandr Kalyna",
   "license": "MIT",
   "dependencies": {
+    "@faker-js/faker": "^9.2.0",
     "axios": "^1.7.7",
     "dotenv": "^16.4.5",
+    "faker": "^5.5.3",
     "joi": "^17.13.3",
     "playwright": "^1.43.0"
   },

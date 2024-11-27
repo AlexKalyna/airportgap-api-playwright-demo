@@ -73,35 +73,35 @@ Positive:
     * Expected Outcome: Response status 200 OK with calculated distance and valid schema.
 
 Negative:
-* Test Scenario P.3.1: Invalid Airport ID (Non-Existent)
+* Test Scenario N.3.1: Invalid Airport ID (Non-Existent)
     * Input: JSON body with one or both airport IDs that do not exist in the database.
     * Expected Outcome: Response status 422 Unprocessable Entity, with an error message:  "Please enter valid 'from' and 'to' airports."
 
-* Test Scenario P.3.2: Malformed Airport IDs (Invalid Format)
+* Test Scenario N.3.2: Malformed Airport IDs (Invalid Format)
     * Input: JSON body with airport IDs that are improperly formatted (e.g., numeric or too short/long strings).
     * Expected Outcome: Response status 422 Unprocessable Entity, with an error message:  "Please enter valid 'from' and 'to' airports."
 
-* Test Scenario P.3.3: Missing Airport IDs in Request Body
+* Test Scenario N.3.3: Missing Airport IDs in Request Body
     * Input: JSON body missing one or both of the airport ID fields.
     * Expected Outcome: Response status 400 Bad Request, with an error message indicating that both airport IDs are required.
 
-* Test Scenario P.3.4: Empty Request Body
+* Test Scenario N.3.4: Empty Request Body
     * Input: An empty JSON body {}.
     * Expected Outcome: Response status 400 Bad Request, with an error message about missing required fields.
 
-* Test Scenario P.3.5: Identical Airport IDs (Same Airport)
+* Test Scenario N.3.5: Identical Airport IDs (Same Airport)
     * Input: JSON body with the same airport ID for both from_airport and to_airport.
     * Expected Outcome: Response status 200 Ok, with  0  distanse value.
 
-* Test Scenario P.3.6: Invalid JSON Format
+* Test Scenario N.3.6: Invalid JSON Format
     * Input: Malformed JSON body (e.g., missing commas, unbalanced braces).
     * Expected Outcome: Response status 400 Bad Request, with an error message about the invalid JSON structure.
 
-* Test Scenario P.3.7: Unauthorized Request
+* Test Scenario N.3.7: Unauthorized Request
     * Input: Request without proper authentication headers or with invalid credentials.
     * Expected Outcome: Response status 401 Unauthorized, with an error message about missing or invalid authentication.
 
-* Test Scenario P.3.8: Unsupported Media Type
+* Test Scenario N.3.8: Unsupported Media Type
     * Input: Request with a Content-Type header that is not application/json (e.g., text/plain).
     * Expected Outcome: Response status 415 Unsupported Media Type, with an error message indicating the unsupported content type.
 
@@ -110,24 +110,62 @@ Negative:
 
 4. POST /tokens
 
-* Test Scenario 1: Create a new token with valid credentials.
+Positive:
+* Test Scenario P.4.1: Create a new token with valid credentials.
     * Input: JSON body with valid username and password.
-    * Expected Outcome: Response status 200 OK with a token.
-* Test Scenario 2: Attempt to create a token with invalid credentials.
-    * Input: JSON body with invalid username or password.
-    * Expected Outcome: Response status 401 Unauthorized with an error message.
-* Test Scenario 3: Validate token response structure.
-    * Input: JSON body with valid credentials.
-    * Expected Outcome: Response contains fields like token, expires_in.
+    * Expected Outcome: Response status 200 OK with a token and valid expected schema.
+
+Negative:
+* Test Scenario N.3.1: Missing Credentials
+    * Input: JSON body with missing username or password.
+    * Expected Outcome: Response status 400 Bad Request with an error message indicating missing credentials.
+
+* Test Scenario N.3.2: Invalid Username
+    * Input: JSON body with an invalid username and a valid password.
+    * Expected Outcome: Response status 401 Unauthorized with an error message like "Invalid username or password."
+
+* Test Scenario N.3.3: Invalid Password
+    * Input: JSON body with a valid username but an incorrect password.
+    * Expected Outcome: Response status 401 Unauthorized with an error message like "Invalid username or password."
+
+* Test Scenario N.3.4: Invalid JSON Format
+    * Input: Malformed JSON in the request body (e.g., missing brackets or commas).
+    * Expected Outcome: Response status 400 Bad Request with an error message indicating invalid JSON format.
+
+* Test Scenario N.3.5: Empty Username or Password
+    * Input: JSON body with an empty username or password field.
+    * Expected Outcome: Response status 400 Bad Request with an error message specifying that username or password cannot be empty.
+
+* Test Scenario N.3.6: Exceeding Rate Limit
+    * Input: Rapidly repeated requests with valid credentials (simulate rate limit).
+    * Expected Outcome: Response status 429 Too Many Requests with an error message indicating rate limit exceeded.
+
+* Test Scenario N.3.7: Unsupported Content-Type
+    * Input: Send the request with a content type other than application/json.
+    * Expected Outcome: Response status 415 Unsupported Media Type with an error message indicating unsupported content type.
+
+* Test Scenario N.3.8: SQL Injection Attempt in Username or Password
+    * Input: JSON body with malicious SQL code in the username or password field (e.g., username: "' OR '1'='1").
+    * Expected Outcome: Response status 401 Unauthorized with an error message, no token created, and no application errors or security vulnerabilities exposed.
+
+* Test Scenario N.3.9: Special Characters in Username
+    * Input: JSON body with a username containing special characters or symbols not allowed.
+    * Expected Outcome: Response status 400 Bad Request with an error message indicating invalid characters in the username.
+
+* Test Scenario N.3.10: Account Lockout
+    * Input: Multiple failed login attempts with an invalid password for the same username.
+    * Expected Outcome: After a certain threshold, response status 403 Forbidden with an error message indicating the account is locked due to failed login attempts.
 
 --------------------------------------------------------------------------------------------------------------------
 
 5. GET /favorites
 
-* Test Scenario 1: Retrieve favorites for authenticated user.
+* Test Scenario P.5.1: Retrieve favorites for authenticated user.
     * Input: Valid authentication token.
     * Expected Outcome: Response status 200 OK with a list of favorite items.
-* Test Scenario 2: Access favorites without authentication.
+
+Negative:
+* Test Scenario N.5.1: Access favorites without authentication.
     * Input: No authentication token.
     * Expected Outcome: Response status 401 Unauthorized.
 
@@ -135,10 +173,13 @@ Negative:
 
 6. GET /favorites/:id
 
-* Test Scenario 1: Retrieve a favorite item by valid ID.
+Positive:
+* Test Scenario P.6.1: Retrieve a favorite item by valid ID.
     * Input: Valid favorite ID and authentication token.
     * Expected Outcome: Response status 200 OK with favorite item details.
-* Test Scenario 2: Attempt to retrieve a favorite item with invalid ID.
+
+Negative:
+* Test Scenario N.6.1: Attempt to retrieve a favorite item with invalid ID.
     * Input: Invalid favorite ID and authentication token.
     * Expected Outcome: Response status 404 Not Found.
 
@@ -146,16 +187,55 @@ Negative:
 
 7. POST /favorites
 
-* Test Scenario 1: Add a new favorite item with valid data.
+Positive:
+* Test Scenario P.7.1: Add a new favorite item with valid data.
     * Input: JSON body with valid favorite data and authentication token.
-    * Expected Outcome: Response status 201 Created with the created favorite item.
-* Test Scenario 2: Attempt to add a favorite item without authentication.
-    * Input: JSON body with valid data but no token.
-    * Expected Outcome: Response status 401 Unauthorized.
+    * Expected Outcome: Response status 201 Created with the created favorite item and valid expected schema.
+
+Negative:
+* Test Scenario N.7.1: Attempt to add a favorite item without authentication.
+    * Input: JSON body with valid favorite data but without an authentication token.
+    * Expected Outcome: Response status 401 Unauthorized with an error message indicating that authentication is required.
+
+* Test Scenario N.7.2: Invalid Authentication Token
+    * Input: JSON body with valid favorite data but an invalid or expired authentication token.
+    * Expected Outcome: Response status 401 Unauthorized with an error message indicating an invalid or expired token.
+
+* Test Scenario N.7.3: Missing Required Fields in Favorite Data
+    * Input: JSON body with incomplete favorite data (e.g., missing required fields like item_id or user_id).
+    * Expected Outcome: Response status 400 Bad Request with an error message specifying which fields are missing.
+
+* Test Scenario N.7.4: Invalid Data Format in JSON Body
+    * Input: JSON body with incorrectly formatted data (e.g., item_id as a string instead of an integer).
+    * Expected Outcome: Response status 400 Bad Request with an error message indicating the type mismatch.
+
+* Test Scenario N.7.5: Empty JSON Body
+    * Input: An empty JSON body (no data provided).
+    * Expected Outcome: Response status 400 Bad Request with an error message specifying that the request body is empty.
+
+* Test Scenario N.7.6: Unsupported Content-Type
+    * Input: Sending the request with a content type other than application/json (e.g., text/plain).
+    * Expected Outcome: Response status 415 Unsupported Media Type with an error message indicating unsupported content type.
+
+* Test Scenario N.7.7: Adding Duplicate Favorite Item
+    * Input: JSON body with favorite data for an item that the user has already added to their favorites.
+    * Expected Outcome: Response status 409 Conflict with an error message indicating that the item is already in the user's favorites.
+
+* Test Scenario N.7.8: Exceeding Maximum Favorites Limit
+    * Input: JSON body with valid favorite data, but the user has reached the maximum number of favorite items allowed.
+    * Expected Outcome: Response status 403 Forbidden or 409 Conflict with an error message indicating the limit has been reached.
+
+* Test Scenario N.7.9: SQL Injection Attempt in Favorite Data
+    * Input: JSON body with malicious SQL code in fields such as item_id or name.
+    * Expected Outcome: Response status 400 Bad Request or 403 Forbidden with an error message, no favorite created, and no application errors or security vulnerabilities exposed.
+
+* Test Scenario N.7.10: Unauthorized User Trying to Add Favorite for Another User
+    * Input: JSON body with user_id set to a different user’s ID.
+    * Expected Outcome: Response status 403 Forbidden with an error message indicating that the user is not authorized to add favorites for another user.
 
 --------------------------------------------------------------------------------------------------------------------
 
-8. PATCH /favorites/
+8. PATCH /favorites/:id
 
 * Test Scenario 1: Update a favorite item with valid data.
     * Input: Valid favorite ID, JSON body with updated data, and authentication token.
@@ -166,7 +246,7 @@ Negative:
 
 --------------------------------------------------------------------------------------------------------------------
 
-9. DELETE /favorites/
+9. DELETE /favorites/:id
 
 * Test Scenario 1: Delete a favorite item by valid ID.
     * Input: Valid favorite ID and authentication token.
