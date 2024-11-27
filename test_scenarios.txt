@@ -162,6 +162,10 @@ Authentication required:
     * Input: Valid authentication token.
     * Expected Outcome: Response status 200 OK with a list of favorite items and valid schema.
 
+* Test Scenario P.5.2: Returns empty list if no favorite airports saved to your Airport Gap account.
+    * Input: Valid authentication token.
+    * Expected Outcome: Response status 200 OK with a list of favorite items and valid schema.
+
 Negative:
 * Test Scenario N.5.1: Access favorites without authentication.
     * Input: No authentication token.
