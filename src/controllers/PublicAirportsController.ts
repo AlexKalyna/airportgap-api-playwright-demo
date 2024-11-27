@@ -14,4 +14,12 @@ export default class PublicAirportsController extends BaseController {
   async wrongGetAirportById(airportId: string) {
     return this._client.post(`${this.AIRPORTS_PATH}/${airportId}`);
   }
+
+  async calculateDistanceBetweenAirports(body: Record<string, string> = {}, headers: Record<string, string> = {}) {
+    return this._client.post(`${this.AIRPORTS_PATH}/distance`, body, { headers });
+  }
+
+  async createToken(body: Record<string, string> = {}, headers: Record<string, string> = {}) {
+    return this._client.post('/api/tokens', body, { headers });
+  }
 }

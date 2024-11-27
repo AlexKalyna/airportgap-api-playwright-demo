@@ -33,14 +33,6 @@ export default class UserAirportsController extends BaseController {
     return this.postRequest(this.USER_AIRPORTS_PATH, airportData);
   }
 
-  async calculateDistanceBetweenAirports(body: Record<string, string> = {}, headers: Record<string, string> = {}) {
-    return this.postRequest(`${this.USER_AIRPORTS_PATH}/distance`, body, headers);
-  }
-
-  async createToken(body: Record<string, string> = {}, headers: Record<string, string> = {}) {
-    return this.postRequest('/api/tokens', body, headers);
-  }
-
   async addAirportToFavorites(body: Record<string, string> = {}, headers: Record<string, string> = {}) {
     return this.postRequest(this.USER_FAVOURITES_PATH, body, headers);
   }

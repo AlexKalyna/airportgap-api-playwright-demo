@@ -14,7 +14,7 @@ test.describe('API DELETE /favorites/clear_al', () => {
     test(
       'Clear all favorites for authenticated user',
       {
-        tag: ['@P.13.1', '@smoke', '@regression']
+        tag: ['@P.10.1', '@smoke', '@regression']
       },
       async () => {
         const response = await client.userAirports.removeAllAirportsFromFavorites();
