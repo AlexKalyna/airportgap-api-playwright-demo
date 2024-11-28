@@ -239,10 +239,13 @@ Negative:
 
 8. PATCH /favorites/:id
 
-* Test Scenario 1: Update a favorite item with valid data.
+Positive:
+* Test Scenario P.8.1: Update a favorite item with valid data.
     * Input: Valid favorite ID, JSON body with updated data, and authentication token.
     * Expected Outcome: Response status 200 OK with updated favorite item.
-* Test Scenario 2: Attempt to update a favorite item with invalid ID.
+
+Negative:
+* Test Scenario N.8.1: Attempt to update a favorite item with invalid ID.
     * Input: Invalid favorite ID and authentication token.
     * Expected Outcome: Response status 404 Not Found.
 
