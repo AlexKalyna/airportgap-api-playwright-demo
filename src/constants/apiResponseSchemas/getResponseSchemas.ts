@@ -54,3 +54,40 @@ export const GET_AIRPORT_BY_ID_SCHEMA = {
     }).required()
   }).required()
 };
+
+export const GET_AIRPORTS_EMPTY_SCHEMA = {
+  data: Joi.array().required()
+};
+
+export const GET_FAVORITE_AIRPORTS_SCHEMA = {
+  data: Joi.array()
+    .items(
+      Joi.object({
+        id: Joi.string().required(),
+        type: Joi.string().valid('favorite').required(),
+        attributes: Joi.object({
+          airport: Joi.object({
+            id: Joi.number().required(),
+            name: Joi.string().required(),
+            city: Joi.string().required(),
+            country: Joi.string().required(),
+            iata: Joi.string().length(3).required(),
+            icao: Joi.string().length(4).required(),
+            latitude: Joi.string().required(),
+            longitude: Joi.string().required(),
+            altitude: Joi.number().required(),
+            timezone: Joi.string().required()
+          }).required(),
+          note: Joi.string().required()
+        }).required()
+      })
+    )
+    .required(),
+  links: Joi.object({
+    first: Joi.string().uri().required(),
+    self: Joi.string().uri().required(),
+    last: Joi.string().uri().required(),
+    prev: Joi.string().uri().required(),
+    next: Joi.string().uri().required()
+  }).required()
+};

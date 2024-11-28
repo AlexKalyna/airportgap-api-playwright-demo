@@ -61,10 +61,6 @@ Negative:
     * Expected Outcome: Response status 405 Method Not Allowed, with a message indicating that only the GET method is allowed.
 
 --------------------------------------------------------------------------------------------------------------------
-
-Authentication required:
---------------------------------------------------------------------------------------------------------------------
-
 3. POST /airports/distance
 
 Positive:
@@ -157,12 +153,18 @@ Negative:
     * Expected Outcome: After a certain threshold, response status 403 Forbidden with an error message indicating the account is locked due to failed login attempts.
 
 --------------------------------------------------------------------------------------------------------------------
+Authentication required:
+--------------------------------------------------------------------------------------------------------------------
 
 5. GET /favorites
 
-* Test Scenario P.5.1: Retrieve favorites for authenticated user.
+* Test Scenario P.5.1: Returns all the favorite airports saved to your Airport Gap account.
     * Input: Valid authentication token.
-    * Expected Outcome: Response status 200 OK with a list of favorite items.
+    * Expected Outcome: Response status 200 OK with a list of favorite items and valid schema.
+
+* Test Scenario P.5.2: Returns empty list if no favorite airports saved to your Airport Gap account.
+    * Input: Valid authentication token.
+    * Expected Outcome: Response status 200 OK with a list of favorite items and valid schema.
 
 Negative:
 * Test Scenario N.5.1: Access favorites without authentication.
@@ -259,14 +261,16 @@ Negative:
 
 10. DELETE /favorites/clear_all
 
-* Test Scenario 1: Clear all favorites for authenticated user.
+Positive:
+* Test Scenario P.10.1: Clear all favorites for authenticated user.
     * Input: Valid authentication token.
     * Expected Outcome: Response status 204 No Content.
-* Test Scenario 2: Attempt to clear all favorites without authentication.
+
+Negative:
+* Test Scenario N.10.1: Attempt to clear all favorites without authentication.
     * Input: No authentication token.
     * Expected Outcome: Response status 401 Unauthorized.
-These scenarios cover a range of positive and negative cases to ensure robustness in the API functionality and security.
-4o mini
+
 
 
 
