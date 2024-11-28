@@ -14,6 +14,10 @@ test.beforeAll(async () => {
   client = await APIClient.authenticate(authData);
 });
 
+test.afterAll(async () => {
+  await client.userAirports.removeAllAirportsFromFavorites();
+});
+
 test.describe('API GET/favorites', () => {
   test.describe('Positive tests', () => {
     test(
@@ -51,13 +55,30 @@ test.describe('API GET/favorites', () => {
         Joi.assert(await response.data, Joi.object(schema.GET_AIRPORTS_EMPTY_SCHEMA));
       }
     );
-    //   });
+  });
+});
 
-    //   test('Return the first page of airports in the Airport Gap database @smoke @regression', async () => {
-    //     const response = await client.userAirports.getUserAirports();
-
-    //     expect(response.status).toBe(200);
-    //     expect(response.statusText).toBe('OK');
-    //     // Joi.assert(await response.data, Joi.object(schema.START_CREATED_CALL_SCHEMA));
+test.describe('API GET/favorites/:id', () => {
+  test.describe('Positive tests', () => {
+    test(
+      'Retrieve a favorite item by valid ID.',
+      {
+        tag: ['@P.6.1', '@smoke', '@regression']
+      },
+      async () => {
+        // Adding airport to favorites to make sure the list is not empty
+        const airportID = helper.getRandomAirportID(airportIDs);
+        const note: string = faker.lorem.words();
+        const requestBody = { airport_id: airportID, note: note };
+        const postResponse = await client.userAirports.addAirportToFavorites(requestBody);
+        expect(postResponse.status).toBe(201);
+        const airoportNumericID = postResponse.data.data.id;
+        // Main test
+        const response = await client.userAirports.getFavouriteAirportById(airoportNumericID);
+        expect(response.status).toBe(200);
+        expect(response.statusText).toBe('OK');
+        Joi.assert(await response.data, Joi.object(schema.GET_FAVORITE_AIRPORT_BY_ID_SCHEMA));
+      }
+    );
   });
 });
