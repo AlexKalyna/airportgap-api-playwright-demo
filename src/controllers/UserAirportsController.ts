@@ -44,4 +44,8 @@ export default class UserAirportsController extends BaseController {
   async getFavouriteAirports(parameter: string = '/', headers: Record<string, string> = {}): Promise<unknown> {
     return this._client.get(this.USER_FAVOURITES_PATH + parameter, { headers });
   }
+
+  async getFavouriteAirportById(airportId: string, headers: Record<string, string> = {}): Promise<unknown> {
+    return this._client.get(`${this.USER_FAVOURITES_PATH}/${airportId}`, { headers });
+  }
 }

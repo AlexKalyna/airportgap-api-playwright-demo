@@ -14,6 +14,10 @@ test.beforeAll(async () => {
   client = await APIClient.authenticate(authData);
 });
 
+test.afterAll(async () => {
+  await client.userAirports.removeAllAirportsFromFavorites();
+});
+
 test.describe('API POST/favorites', () => {
   test.describe('Positive tests', () => {
     test.beforeEach('Remove all favorite airports', async () => {
