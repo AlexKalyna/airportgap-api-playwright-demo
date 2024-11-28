@@ -253,10 +253,13 @@ Negative:
 
 9. DELETE /favorites/:id
 
-* Test Scenario 1: Delete a favorite item by valid ID.
+Positive:
+* Test Scenario P.9.1: Delete a favorite item by valid ID.
     * Input: Valid favorite ID and authentication token.
     * Expected Outcome: Response status 204 No Content.
-* Test Scenario 2: Attempt to delete a favorite item with invalid ID.
+
+Negative:
+* Test Scenario N.9.1: Attempt to delete a favorite item with invalid ID.
     * Input: Invalid favorite ID and authentication token.
     * Expected Outcome: Response status 404 Not Found.
 
