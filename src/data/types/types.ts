@@ -5,5 +5,5 @@ export interface UserData {
 
 export interface AirportData {
   airport_id: string;
-  notes: string;
+  note: string;
 }
