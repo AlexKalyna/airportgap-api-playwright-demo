@@ -19,43 +19,59 @@ test.afterAll(async () => {
 });
 
 test.describe('API GET/favorites', () => {
-  test.describe('Positive tests', () => {
-    test(
-      'Returns all the favorite airports saved to your Airport Gap account.',
-      {
-        tag: ['@P.5.1', '@smoke', '@regression']
-      },
-      async () => {
-        // Adding airport to favorites to make sure the list is not empty
-        const airportID = helper.getRandomAirportID(airportIDs);
-        const note: string = faker.lorem.words();
-        const requestBody = { airport_id: airportID, note: note };
-        const postResponse = await client.userAirports.addAirportToFavorites(requestBody);
-        expect(postResponse.status).toBe(201);
-        // Main test
-        const response = await client.userAirports.getFavouriteAirports();
-        expect(response.status).toBe(200);
-        expect(response.statusText).toBe('OK');
-        Joi.assert(await response.data, Joi.object(schema.GET_FAVORITE_AIRPORTS_SCHEMA));
-      }
-    );
-    test(
-      'Returns empty list if no favorite airports saved to your Airport Gap account.',
-      {
-        tag: ['@P.5.2', '@smoke', '@regression']
-      },
-      async () => {
-        // Removing all airports from favorites to make sure the list is empty
-        const postResponse = await client.userAirports.removeAllAirportsFromFavorites();
-        expect(postResponse.status).toBe(204);
-        // Main test
-        const response = await client.userAirports.getFavouriteAirports();
-        expect(response.status).toBe(200);
-        expect(response.statusText).toBe('OK');
-        Joi.assert(await response.data, Joi.object(schema.GET_AIRPORTS_EMPTY_SCHEMA));
-      }
-    );
+  test.beforeEach('Clear all favorites before each test', async () => {
+    try {
+      await client.userAirports.removeAllAirportsFromFavorites();
+      // Add small delay to prevent rate limiting
+      await new Promise(resolve => setTimeout(resolve, 500));
+    } catch (error) {
+      // Ignore errors if no favorites exist
+    }
   });
+
+  test(
+    'Returns all the favorite airports saved to your Airport Gap account.',
+    {
+      tag: ['@P.5.1', '@smoke', '@regression']
+    },
+    async () => {
+      // Add a favorite first
+      const airportID = helper.getRandomAirportID(airportIDs);
+      const note = faker.lorem.words();
+      const requestBody = { airport_id: airportID, note: note };
+      const postResponse = await client.userAirports.addAirportToFavorites(requestBody);
+      expect(postResponse.status).toBe(201);
+      // Add small delay to prevent rate limiting
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Main test
+      const response = await client.userAirports.getFavouriteAirports();
+      expect(response.status).toBe(200);
+      expect(response.statusText).toBe('OK');
+      Joi.assert(await response.data, Joi.object(schema.GET_FAVORITE_AIRPORTS_SCHEMA));
+    }
+  );
+
+  test(
+    'Returns empty list if no favorite airports saved to your Airport Gap account.',
+    {
+      tag: ['@P.5.2', '@smoke', '@regression']
+    },
+    async () => {
+      // Removing all airports from favorites to make sure the list is empty
+      const postResponse = await client.userAirports.removeAllAirportsFromFavorites();
+      expect(postResponse.status).toBe(204);
+      // Add small delay to prevent rate limiting
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Main test
+      const response = await client.userAirports.getFavouriteAirports();
+      expect(response.status).toBe(200);
+      expect(response.statusText).toBe('OK');
+      // For empty favorites, the API only returns data array without links
+      Joi.assert(await response.data, Joi.object(schema.GET_FAVORITES_EMPTY_SCHEMA));
+    }
+  );
 });
 
 test.describe('API GET/favorites/:id', () => {

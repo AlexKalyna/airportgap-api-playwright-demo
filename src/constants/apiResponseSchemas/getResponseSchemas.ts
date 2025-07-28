@@ -55,7 +55,18 @@ export const GET_AIRPORT_BY_ID_SCHEMA = {
   }).required()
 };
 
-export const GET_AIRPORTS_EMPTY_SCHEMA = {
+export const GET_AIRPORTS_EMPTY_ARRAY_SCHEMA = {
+  data: Joi.array().required(),
+  links: Joi.object({
+    first: Joi.string().uri().required(),
+    self: Joi.string().uri().required(),
+    last: Joi.string().uri().required(),
+    prev: Joi.string().uri().required(),
+    next: Joi.string().uri().required()
+  }).required()
+};
+
+export const GET_FAVORITES_EMPTY_SCHEMA = {
   data: Joi.array().required()
 };
 
