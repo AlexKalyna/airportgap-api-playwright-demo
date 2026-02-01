@@ -29,6 +29,15 @@ jobs:
     - uses: actions/checkout@v4
     - name: install npm deps
       run: npm ci --legacy-peer-deps
+    - name: Verify environment variables
+      run: |
+        if [ -z "$API_URL" ]; then
+          echo "ERROR: API_URL is not set!"
+          exit 1
+        fi
+        echo "API_URL is set (length: ${#API_URL})"
+        echo "HTTP_CREDENTIALS_EMAIL is set: $([ -z "$HTTP_CREDENTIALS_EMAIL" ] && echo 'NO' || echo 'YES')"
+        echo "HTTP_CREDENTIALS_PASSWORD is set: $([ -z "$HTTP_CREDENTIALS_PASSWORD" ] && echo 'NO' || echo 'YES')"
     - name: running api tests
       run: npm test
     - uses: actions/upload-artifact@v4

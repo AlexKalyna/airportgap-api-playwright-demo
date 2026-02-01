@@ -6,7 +6,10 @@ export default class BaseController {
 
   private readonly _baseUrl: string;
 
-  constructor({ baseUrl = config.apiURL || 'undefined', authorization = '' } = {}) {
+  constructor({ baseUrl = config.apiURL, authorization = '' } = {}) {
+    if (!baseUrl) {
+      throw new Error('baseUrl is required. API_URL environment variable must be set.');
+    }
     this._baseUrl = baseUrl;
     this._client = axios.create({
       baseURL: this._baseUrl,
