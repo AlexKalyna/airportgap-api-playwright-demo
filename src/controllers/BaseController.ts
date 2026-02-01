@@ -14,7 +14,8 @@ export default class BaseController {
     this._client = axios.create({
       baseURL: this._baseUrl,
       headers: {
-        Authorization: authorization
+        'Accept': 'application/json',
+        'Authorization': authorization
       },
       validateStatus: status => {
         return status < 501;
