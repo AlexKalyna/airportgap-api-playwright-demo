@@ -41,8 +41,16 @@ jobs:
           exit 1
         fi
         echo "API_URL is set"
-        echo "HTTP_CREDENTIALS_EMAIL is set: $([ -z "$HTTP_CREDENTIALS_EMAIL" ] && echo 'NO' || echo 'YES')"
-        echo "HTTP_CREDENTIALS_PASSWORD is set: $([ -z "$HTTP_CREDENTIALS_PASSWORD" ] && echo 'NO' || echo 'YES')"
+        if [ -z "$HTTP_CREDENTIALS_EMAIL" ]; then
+          echo "HTTP_CREDENTIALS_EMAIL is not set"
+        else
+          echo "HTTP_CREDENTIALS_EMAIL is set"
+        fi
+        if [ -z "$HTTP_CREDENTIALS_PASSWORD" ]; then
+          echo "HTTP_CREDENTIALS_PASSWORD is not set"
+        else
+          echo "HTTP_CREDENTIALS_PASSWORD is set"
+        fi
     - name: Running api tests
       run: npm test
     - uses: actions/upload-artifact@v4
