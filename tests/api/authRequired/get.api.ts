@@ -6,6 +6,7 @@ import * as schema from 'src/constants/apiResponseSchemas/getResponseSchemas';
 import faker from 'faker';
 import * as helper from 'src/helpers/helpers';
 import { airportIDs } from 'src/data/airports';
+import { ApiResponse, FavoriteAirportData } from '../../../src/data/types/apiResponseTypes';
 
 let client: APIClient;
 
@@ -39,13 +40,13 @@ test.describe('API GET/favorites', () => {
       const airportID = helper.getRandomAirportID(airportIDs);
       const note = faker.lorem.words();
       const requestBody = { airport_id: airportID, note: note };
-      const postResponse = await client.userAirports.addAirportToFavorites(requestBody);
+      const postResponse = (await client.userAirports.addAirportToFavorites(requestBody)) as ApiResponse<FavoriteAirportData>;
       expect(postResponse.status).toBe(201);
       // Add small delay to prevent rate limiting
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       // Main test
-      const response = await client.userAirports.getFavouriteAirports();
+      const response = (await client.userAirports.getFavouriteAirports()) as ApiResponse;
       expect(response.status).toBe(200);
       expect(response.statusText).toBe('OK');
       Joi.assert(await response.data, Joi.object(schema.GET_FAVORITE_AIRPORTS_SCHEMA));
@@ -59,13 +60,13 @@ test.describe('API GET/favorites', () => {
     },
     async () => {
       // Removing all airports from favorites to make sure the list is empty
-      const postResponse = await client.userAirports.removeAllAirportsFromFavorites();
+      const postResponse = (await client.userAirports.removeAllAirportsFromFavorites()) as ApiResponse<string>;
       expect(postResponse.status).toBe(204);
       // Add small delay to prevent rate limiting
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       // Main test
-      const response = await client.userAirports.getFavouriteAirports();
+      const response = (await client.userAirports.getFavouriteAirports()) as ApiResponse;
       expect(response.status).toBe(200);
       expect(response.statusText).toBe('OK');
       // For empty favorites, the API only returns data array without links
@@ -86,11 +87,11 @@ test.describe('API GET/favorites/:id', () => {
         const airportID = helper.getRandomAirportID(airportIDs);
         const note: string = faker.lorem.words();
         const requestBody = { airport_id: airportID, note: note };
-        const postResponse = await client.userAirports.addAirportToFavorites(requestBody);
+        const postResponse = (await client.userAirports.addAirportToFavorites(requestBody)) as ApiResponse<FavoriteAirportData>;
         expect(postResponse.status).toBe(201);
         const airoportNumericID = postResponse.data.data.id;
         // Main test
-        const response = await client.userAirports.getFavouriteAirportById(airoportNumericID);
+        const response = (await client.userAirports.getFavouriteAirportById(airoportNumericID)) as ApiResponse;
         expect(response.status).toBe(200);
         expect(response.statusText).toBe('OK');
         Joi.assert(await response.data, Joi.object(schema.GET_FAVORITE_AIRPORT_BY_ID_SCHEMA));

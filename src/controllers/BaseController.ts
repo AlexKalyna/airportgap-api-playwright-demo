@@ -6,11 +6,15 @@ export default class BaseController {
 
   private readonly _baseUrl: string;
 
-  constructor({ baseUrl = config.apiURL || 'undefined', authorization = '' } = {}) {
+  constructor({ baseUrl = config.apiURL, authorization = '' } = {}) {
+    if (!baseUrl) {
+      throw new Error('baseUrl is required. API_URL environment variable must be set.');
+    }
     this._baseUrl = baseUrl;
     this._client = axios.create({
       baseURL: this._baseUrl,
       headers: {
+        Accept: 'application/json',
         Authorization: authorization
       },
       validateStatus: status => {
@@ -18,10 +22,34 @@ export default class BaseController {
       }
     });
 
+    // Add request interceptor for debugging (only in CI)
+    if (process.env.CI) {
+      this._client.interceptors.request.use(
+        requestConfig => {
+          const fullUrl = `${requestConfig.baseURL}${requestConfig.url}`;
+          console.log(`[API Request] ${requestConfig.method?.toUpperCase()} ${fullUrl}`);
+          return requestConfig;
+        },
+        error => Promise.reject(error)
+      );
+    }
+
     // Add retry interceptor for rate limiting
     this._client.interceptors.response.use(
-      response => response,
+      response => {
+        // Log response in CI for debugging
+        if (process.env.CI && (response.status >= 400 || response.status < 200)) {
+          const fullUrl = `${response.config.baseURL}${response.config.url}`;
+          console.log(`[API Response] ${response.status} ${response.statusText} - ${fullUrl}`);
+        }
+        return response;
+      },
       async error => {
+        // Log error responses in CI
+        if (process.env.CI && error.response) {
+          const fullUrl = `${error.config?.baseURL}${error.config?.url}`;
+          console.log(`[API Error] ${error.response.status} ${error.response.statusText} - ${fullUrl}`);
+        }
         if (error.response?.status === 429) {
           const retryAfter = error.response.headers['retry-after'] || 1;
           const delay = parseInt(retryAfter) * 1000;

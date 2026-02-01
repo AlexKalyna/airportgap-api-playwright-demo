@@ -1,7 +1,7 @@
 import BaseController from './BaseController';
 
 export default class PublicAirportsController extends BaseController {
-  private readonly AIRPORTS_PATH: string = '/api/airports';
+  private readonly AIRPORTS_PATH: string = '/airports';
 
   async getAirports(parameter: string = '/', headers: Record<string, string> = {}): Promise<unknown> {
     return this._client.get(this.AIRPORTS_PATH + parameter, { headers });
@@ -20,6 +20,6 @@ export default class PublicAirportsController extends BaseController {
   }
 
   async createToken(body: Record<string, string> = {}, headers: Record<string, string> = {}) {
-    return this._client.post('/api/tokens', body, { headers });
+    return this._client.post('/tokens', body, { headers });
   }
 }

@@ -4,6 +4,7 @@ import { getData } from '../../../src/data/dict/userData';
 import faker from 'faker';
 import * as helper from 'src/helpers/helpers';
 import { airportIDs } from 'src/data/airports';
+import { ApiResponse, FavoriteAirportData } from '../../../src/data/types/apiResponseTypes';
 
 let client: APIClient;
 let airoportNumericID: string;
@@ -17,7 +18,7 @@ test.beforeEach(async () => {
   const airportID = helper.getRandomAirportID(airportIDs);
   const note: string = faker.lorem.words();
   const requestBody = { airport_id: airportID, note: note };
-  const postResponse = await client.userAirports.addAirportToFavorites(requestBody);
+  const postResponse = (await client.userAirports.addAirportToFavorites(requestBody)) as ApiResponse<FavoriteAirportData>;
   expect(postResponse.status).toBe(201);
   airoportNumericID = postResponse.data.data.id;
 });

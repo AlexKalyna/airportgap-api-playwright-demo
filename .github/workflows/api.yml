@@ -18,18 +18,40 @@ jobs:
     needs: eslint-check
     env:
       HOME: /root
+      DOCKER_CONFIG: /root/.docker
       API_URL: ${{ vars.API_URL }}
       HTTP_CREDENTIALS_EMAIL: ${{ vars.HTTP_CREDENTIALS_EMAIL }}
       HTTP_CREDENTIALS_PASSWORD: ${{ secrets.HTTP_CREDENTIALS_PASSWORD }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.48.1-jammy
+      image: mcr.microsoft.com/playwright:v1.58.1-jammy
     steps:
     - uses: actions/checkout@v4
-    - name: install npm deps
+    - name: Setup Docker config to suppress warning
+      run: |
+        mkdir -p $HOME/.docker
+        echo '{}' > $HOME/.docker/config.json
+    - name: Install npm deps
       run: npm ci --legacy-peer-deps
-    - name: running api tests
+    - name: Verify environment variables
+      run: |
+        if [ -z "$API_URL" ]; then
+          echo "ERROR: API_URL is not set!"
+          exit 1
+        fi
+        echo "API_URL is set"
+        if [ -z "$HTTP_CREDENTIALS_EMAIL" ]; then
+          echo "HTTP_CREDENTIALS_EMAIL is not set"
+        else
+          echo "HTTP_CREDENTIALS_EMAIL is set"
+        fi
+        if [ -z "$HTTP_CREDENTIALS_PASSWORD" ]; then
+          echo "HTTP_CREDENTIALS_PASSWORD is not set"
+        else
+          echo "HTTP_CREDENTIALS_PASSWORD is set"
+        fi
+    - name: Running api tests
       run: npm test
     - uses: actions/upload-artifact@v4
       if: always()
