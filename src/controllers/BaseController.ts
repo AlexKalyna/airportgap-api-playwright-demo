@@ -14,8 +14,8 @@ export default class BaseController {
     this._client = axios.create({
       baseURL: this._baseUrl,
       headers: {
-        'Accept': 'application/json',
-        'Authorization': authorization
+        Accept: 'application/json',
+        Authorization: authorization
       },
       validateStatus: status => {
         return status < 501;
@@ -25,10 +25,10 @@ export default class BaseController {
     // Add request interceptor for debugging (only in CI)
     if (process.env.CI) {
       this._client.interceptors.request.use(
-        config => {
-          const fullUrl = `${config.baseURL}${config.url}`;
-          console.log(`[API Request] ${config.method?.toUpperCase()} ${fullUrl}`);
-          return config;
+        requestConfig => {
+          const fullUrl = `${requestConfig.baseURL}${requestConfig.url}`;
+          console.log(`[API Request] ${requestConfig.method?.toUpperCase()} ${fullUrl}`);
+          return requestConfig;
         },
         error => Promise.reject(error)
       );
