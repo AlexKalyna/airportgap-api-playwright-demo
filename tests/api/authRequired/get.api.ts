@@ -43,7 +43,7 @@ test.describe('API GET/favorites', () => {
       expect(postResponse.status).toBe(201);
       // Add small delay to prevent rate limiting
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       // Main test
       const response = await client.userAirports.getFavouriteAirports();
       expect(response.status).toBe(200);
@@ -63,7 +63,7 @@ test.describe('API GET/favorites', () => {
       expect(postResponse.status).toBe(204);
       // Add small delay to prevent rate limiting
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       // Main test
       const response = await client.userAirports.getFavouriteAirports();
       expect(response.status).toBe(200);
