@@ -18,6 +18,7 @@ jobs:
     needs: eslint-check
     env:
       HOME: /root
+      DOCKER_CONFIG: /root/.docker
       API_URL: ${{ vars.API_URL }}
       HTTP_CREDENTIALS_EMAIL: ${{ vars.HTTP_CREDENTIALS_EMAIL }}
       HTTP_CREDENTIALS_PASSWORD: ${{ secrets.HTTP_CREDENTIALS_PASSWORD }}
@@ -27,6 +28,10 @@ jobs:
       image: mcr.microsoft.com/playwright:v1.58.1-jammy
     steps:
     - uses: actions/checkout@v4
+    - name: Setup Docker config to suppress warning
+      run: |
+        mkdir -p $HOME/.docker
+        echo '{}' > $HOME/.docker/config.json
     - name: install npm deps
       run: npm ci --legacy-peer-deps
     - name: Verify environment variables
@@ -36,6 +41,11 @@ jobs:
           exit 1
         fi
         echo "API_URL is set (length: ${#API_URL})"
+        # Show first and last few characters for debugging (masking the middle)
+        if [ ${#API_URL} -gt 10 ]; then
+          echo "API_URL starts with: ${API_URL:0:10}..."
+          echo "API_URL ends with: ...${API_URL: -10}"
+        fi
         echo "HTTP_CREDENTIALS_EMAIL is set: $([ -z "$HTTP_CREDENTIALS_EMAIL" ] && echo 'NO' || echo 'YES')"
         echo "HTTP_CREDENTIALS_PASSWORD is set: $([ -z "$HTTP_CREDENTIALS_PASSWORD" ] && echo 'NO' || echo 'YES')"
     - name: running api tests

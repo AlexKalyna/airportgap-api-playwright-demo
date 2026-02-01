@@ -21,10 +21,34 @@ export default class BaseController {
       }
     });
 
+    // Add request interceptor for debugging (only in CI)
+    if (process.env.CI) {
+      this._client.interceptors.request.use(
+        config => {
+          const fullUrl = `${config.baseURL}${config.url}`;
+          console.log(`[API Request] ${config.method?.toUpperCase()} ${fullUrl}`);
+          return config;
+        },
+        error => Promise.reject(error)
+      );
+    }
+
     // Add retry interceptor for rate limiting
     this._client.interceptors.response.use(
-      response => response,
+      response => {
+        // Log response in CI for debugging
+        if (process.env.CI && (response.status >= 400 || response.status < 200)) {
+          const fullUrl = `${response.config.baseURL}${response.config.url}`;
+          console.log(`[API Response] ${response.status} ${response.statusText} - ${fullUrl}`);
+        }
+        return response;
+      },
       async error => {
+        // Log error responses in CI
+        if (process.env.CI && error.response) {
+          const fullUrl = `${error.config?.baseURL}${error.config?.url}`;
+          console.log(`[API Error] ${error.response.status} ${error.response.statusText} - ${fullUrl}`);
+        }
         if (error.response?.status === 429) {
           const retryAfter = error.response.headers['retry-after'] || 1;
           const delay = parseInt(retryAfter) * 1000;
