@@ -3,7 +3,7 @@ import BaseController from './BaseController';
 import querystring from 'querystring';
 
 export default class AuthController extends BaseController {
-  private readonly SIGN_IN_PATH: string = '/api/tokens';
+  private readonly SIGN_IN_PATH: string = '/tokens';
 
   async signIn({ email, password }: UserData) {
     const encodedData = querystring.stringify({ email, password });

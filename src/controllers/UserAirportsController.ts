@@ -3,9 +3,9 @@ import BaseController from './BaseController';
 import querystring from 'querystring';
 
 export default class UserAirportsController extends BaseController {
-  private readonly USER_AIRPORTS_PATH = '/api/airports';
+  private readonly USER_AIRPORTS_PATH = '/airports';
 
-  private readonly USER_FAVOURITES_PATH = '/api/favorites';
+  private readonly USER_FAVOURITES_PATH = '/favorites';
 
   private readonly DEFAULT_HEADERS = {
     'Content-Type': 'application/x-www-form-urlencoded'
